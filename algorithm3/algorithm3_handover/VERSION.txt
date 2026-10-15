@@ -1,0 +1,5 @@
+Algorithm 3 handover package
+source: HomeEase repository, branch main, commit a90b2862f292092113df4a50dd4d643b69816f96
+date: 2026-10-14
+python: 3.12, platform: Windows 11
+src/homeease/** is a trimmed copy of the repository files, unchanged; src/algorithm3/** is new.

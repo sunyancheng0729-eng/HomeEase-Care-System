@@ -1,0 +1,112 @@
+{
+ "scenes": [
+  {
+   "id": "scene_glass_break",
+   "file": "scene_glass_break.wav",
+   "title": "玻璃碎裂",
+   "note": "20 秒:安静的家里,第 8 到 13 秒有玻璃碎裂声(标注 ABNORMAL)。模型对 ABNORMAL 的召回不高(约 0.41),所以多半标成 DAILY 或 UNKNOWN,这是评估里写明的局限。"
+  },
+  {
+   "id": "scene_tv_and_knock",
+   "file": "scene_tv_and_knock.wav",
+   "title": "电视和敲门声",
+   "note": "20 秒:第 3 到 6 秒电视里有人说话(不是本人回答),第 18 到 23 秒有敲门声(标注 IMPACT)。语音门限会切出电视的说话片段,喊救命检测不会因此报警。"
+  },
+  {
+   "id": "scene_quiet_home",
+   "file": "scene_quiet_home.wav",
+   "title": "安静的家",
+   "note": "20 秒:洗衣机背景声加一个日常声音(标注 DAILY)。不应出现 HELP、IMPACT、ABNORMAL。"
+  },
+  {
+   "id": "scene_fall_help_call",
+   "file": "scene_fall_help_call.wav",
+   "title": "摔倒后喊救命",
+   "note": "24 秒:撞击声、一声尖叫,第 9 到 12 秒本人说\"Help me, I fell and I cannot get up.\"。喊救命检测应在 9 秒多报警。"
+  },
+  {
+   "id": "scene_fall_reassured",
+   "file": "scene_fall_reassured.wav",
+   "title": "摔倒后说\"我没事\"",
+   "note": "24 秒:撞击声,随后本人说\"I'm fine, don't worry.\"。回复识别为 REASSURANCE,喊救命检测不报警。"
+  },
+  {
+   "id": "scene_fall_visitor_reply",
+   "file": "scene_fall_visitor_reply.wav",
+   "title": "访客替老人回答",
+   "note": "24 秒:撞击声,随后另一个声音(访客)说\"Don't worry, she is fine.\"。文字上是安慰,没有声纹时无法区分说话人。"
+  }
+ ],
+ "replies": [
+  {
+   "id": "reply_help_en",
+   "file": "reply_help_en.wav",
+   "title": "喊救命(英文)",
+   "said": "Help me! I fell and I can't get up.",
+   "note": "回复识别判为 HELP;喊救命检测报警。语音门限可能把一句话切成两段,第二段落在冷却时间内,会显示 cooldown。"
+  },
+  {
+   "id": "reply_help_zh",
+   "file": "reply_help_zh.wav",
+   "title": "喊救命(中文)",
+   "said": "救命啊,我摔倒了,起不来了。",
+   "note": "应判为 HELP;喊救命检测应报警。"
+  },
+  {
+   "id": "reply_fine_en",
+   "file": "reply_fine_en.wav",
+   "title": "我没事(英文)",
+   "said": "I'm fine, don't worry.",
+   "note": "应判为 REASSURANCE(没有登记声纹时,有效取消只靠文字和识别置信度)。"
+  },
+  {
+   "id": "reply_fine_zh",
+   "file": "reply_fine_zh.wav",
+   "title": "我没事(中文)",
+   "said": "我没事,不用担心。",
+   "note": "应判为 REASSURANCE。"
+  },
+  {
+   "id": "reply_visitor_fine",
+   "file": "reply_visitor_fine.wav",
+   "title": "访客说\"她没事\"",
+   "said": "Don't worry, she is fine.",
+   "note": "文字上是安慰,所以会判为 REASSURANCE:没有声纹时文字不能证明说话人是谁。"
+  },
+  {
+   "id": "reply_fine_but_stuck",
+   "file": "reply_fine_but_stuck.wav",
+   "title": "\"没事,但是起不来\"",
+   "said": "I'm fine, but I can't get up.",
+   "note": "混合句:求救线索优先,应判为 HELP。"
+  },
+  {
+   "id": "reply_other_en",
+   "file": "reply_other_en.wav",
+   "title": "无关的话",
+   "said": "Okay, I will make some tea later.",
+   "note": "应判为 OTHER:不是安慰也不是求救,所以不算有效取消。"
+  },
+  {
+   "id": "reply_thanks_en",
+   "file": "reply_thanks_en.wav",
+   "title": "感谢的话",
+   "said": "Thank you for your help.",
+   "note": "回复识别只看到 help 这个词,会判为 HELP;喊救命监听有专门的过滤(感谢、提议不算求救),所以不报警(not_a_call)。两者规则不同。"
+  },
+  {
+   "id": "reply_tv_long",
+   "file": "reply_tv_long.wav",
+   "title": "电视里的长句",
+   "said": "And in tonight's news, the city council has asked residents who need help with heating costs to call the support line, and a spokesperson said that volunteers will be ready to help families across the whole district this winter.",
+   "note": "含 help 的长句(超过 6 秒):喊救命检测忽略(too_long),不会误报;回复识别仍会读到 help 这个词。"
+  },
+  {
+   "id": "reply_silence",
+   "file": "reply_silence.wav",
+   "title": "没有回答(3 秒静音)",
+   "said": "",
+   "note": "应得到 NO_RESPONSE:没人回答,按规则不算取消,会升级。"
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+  "model": "opt_tcn_b4_w48",
+  "negative_all_targets": [
+    {
+      "source": "s09_m07_reconstructed",
+      "target": "chair_sit_to_stand",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s09_m07_reconstructed",
+      "target": "squat",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s09_m07_reconstructed",
+      "target": "standing_leg_raise",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s09_m07_reconstructed",
+      "target": "hurdle_step",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s10_m07_reconstructed",
+      "target": "chair_sit_to_stand",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s10_m07_reconstructed",
+      "target": "squat",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s10_m07_reconstructed",
+      "target": "standing_leg_raise",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "source": "s10_m07_reconstructed",
+      "target": "hurdle_step",
+      "count": 0,
+      "expected": 0
+    }
+  ],
+  "static_all_targets": [
+    {
+      "target": "chair_sit_to_stand",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "target": "squat",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "target": "standing_leg_raise",
+      "count": 0,
+      "expected": 0
+    },
+    {
+      "target": "hurdle_step",
+      "count": 0,
+      "expected": 0
+    }
+  ],
+  "same_run_cpu_benchmarks": [
+    {
+      "model": "gru_b2_w64",
+      "context_frames": 64,
+      "cpu_p50_ms": 8.92585000838153,
+      "cpu_p95_ms": 9.963819998665713,
+      "parameters": 55185,
+      "weight_kib": 215.56640625
+    },
+    {
+      "model": "opt_tcn_b4_w48",
+      "context_frames": 64,
+      "cpu_p50_ms": 5.619100003968924,
+      "cpu_p95_ms": 7.48989004350733,
+      "parameters": 62453,
+      "weight_kib": 243.95703125
+    }
+  ]
+}

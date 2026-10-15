@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>加速度单通道跌倒检测系统</title>
+<link rel="stylesheet" href="/web/style.css">
+</head>
+<body>
+<header>
+  <div class="hd">
+    <div class="logo"><span class="dot"></span>加速度单通道跌倒检测系统</div>
+    <span class="chip">算法 <b id="chipAlg">—</b></span>
+    <span class="chip">阈值 <b id="chipThr">0.50</b></span>
+    <span class="chip">模型 <b id="chipModel">—</b></span>
+    <div class="spacer"></div>
+    <span class="chip">已记录跌倒 <b id="chipCount">0</b></span>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <div class="tab active" data-tab="live">① 传感器实时流</div>
+    <div class="tab" data-tab="sim">② 模拟数据输入</div>
+    <div class="tab" data-tab="rec">③ 跌倒记录与报告</div>
+  </div>
+
+  <!-- ================= ① 传感器实时流 ================= -->
+  <section class="panel active" id="panel-live">
+    <div class="cols">
+      <div>
+        <div class="card">
+          <h2>数据源与推流控制 <span class="tag">continuous accelerometer stream</span></h2>
+          <div class="row">
+            <label class="f">内置序列（模拟传感器持续推流）
+              <select id="liveSeq"></select></label>
+            <label class="f">推流倍速
+              <select id="liveSpeed">
+                <option value="1">1× 实时</option>
+                <option value="2">2×</option>
+                <option value="5" selected>5×</option>
+                <option value="10">10×</option>
+                <option value="30">30× 快速</option>
+              </select></label>
+            <label class="f">报警阈值
+              <input type="number" id="liveThr" value="0.5" min="0" max="1" step="0.05"></label>
+          </div>
+          <div class="row">
+            <button class="primary" id="btnStart">开始推流</button>
+            <button id="btnStop" disabled>停止</button>
+            <button class="ghost" id="btnReset">重置检测状态</button>
+            <span class="mini" id="liveConn">未连接</span>
+          </div>
+          <div class="hint">
+            本模式模拟<b>持续输入的加速度传感器</b>：样本逐个送入检测器，逐窗评估，命中即报警并落库。<br>
+            真实传感器接入只需连接 <code>ws://127.0.0.1:8000/ws/stream</code> 并持续发送
+            <code>{"type":"sample","t":1.23,"ax":0.12,"ay":0.93,"az":0.21}</code>（单位 g，t 为秒）。
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>实时监测 <span class="tag">live</span></h2>
+          <div class="stats">
+            <div class="stat"><div class="k">流内时刻</div><div class="v" id="stT">0.00<small> s</small></div></div>
+            <div class="stat" id="stProbBox"><div class="k">最新窗口概率</div><div class="v" id="stP">—</div></div>
+            <div class="stat" id="stStateBox"><div class="k">检测状态</div><div class="v" id="stState">空闲</div></div>
+            <div class="stat"><div class="k">已评估窗口</div><div class="v" id="stN">0</div></div>
+            <div class="stat good"><div class="k">本次检出跌倒</div><div class="v" id="stFall">0</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="mini" style="margin-bottom:6px">实时加速度波形（原始 mg 标定前，单位 g）</div>
+            <canvas id="cvWave"></canvas>
+          </div>
+          <div style="margin-top:12px">
+            <div class="mini" style="margin-bottom:6px">窗口概率曲线（红柱=命中，橙虚线=阈值）</div>
+            <canvas id="cvProb"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>本次会话检出的跌倒 <span class="tag" id="liveCount">0</span></h2>
+          <div class="list" id="liveList"><div class="empty">暂无检出</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ② 模拟数据输入 ================= -->
+  <section class="panel" id="panel-sim">
+    <div class="cols">
+      <div>
+        <div class="card">
+          <h2>模拟数据输入 <span class="tag">offline batch detection</span></h2>
+          <div class="row">
+            <label class="f">内置 URFD 序列
+              <select id="simSeq"></select></label>
+            <label class="f">报警阈值
+              <input type="number" id="simThr" value="0.5" min="0" max="1" step="0.05"></label>
+          </div>
+          <div class="row">
+            <button class="primary" id="btnSim">运行整段检测</button>
+            <label class="f" style="flex:1 1 240px">或上传 CSV（列序 t_ms,|a|,ax,ay,az）
+              <input type="file" id="simFile" accept=".csv,.txt"></label>
+            <button id="btnUpload">上传并检测</button>
+          </div>
+          <div class="hint">
+            对整段加速度一次跑完「重采样 60 Hz → Butterworth 低通 5 Hz → 2 s / 0.25 s 滑窗 →
+            39 维特征 → RF(400)+XGB(400) → 事件聚合」，与算法工程 exp03 的离线评测口径一致。
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>检测结果 <span class="tag" id="simTag">—</span></h2>
+          <div class="stats" style="margin-bottom:14px">
+            <div class="stat"><div class="k">数据时长</div><div class="v" id="simDur">—</div></div>
+            <div class="stat"><div class="k">窗口数</div><div class="v" id="simWin">—</div></div>
+            <div class="stat"><div class="k">命中窗口</div><div class="v" id="simHit">—</div></div>
+            <div class="stat good"><div class="k">检出跌倒事件</div><div class="v" id="simEv">—</div></div>
+          </div>
+          <div class="mini" style="margin-bottom:6px">逐窗概率（x = 窗口结束时刻）</div>
+          <canvas id="cvSimProb"></canvas>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>检出的事件 <span class="tag">点击查看报告</span></h2>
+          <div class="list" id="simList"><div class="empty">尚未运行检测</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ③ 跌倒记录与报告 ================= -->
+  <section class="panel" id="panel-rec">
+    <div class="card">
+      <h2>跌倒记录 <span class="tag" id="recCount">—</span></h2>
+      <div class="row" style="margin-bottom:12px">
+        <button id="btnRefresh">刷新</button>
+        <label class="f" style="max-width:200px;flex:0 0 auto">来源筛选
+          <select id="recSrc">
+            <option value="">全部</option>
+            <option value="sensor">传感器实时流</option>
+            <option value="sim">模拟数据</option>
+          </select></label>
+        <div class="spacer"></div>
+        <button class="danger" id="btnClear">清空全部记录</button>
+      </div>
+      <div style="overflow:auto">
+        <table>
+          <thead><tr>
+            <th>ID</th><th>报警时间（系统时间）</th><th>来源</th><th>序列 / 文件</th>
+            <th>报警概率</th><th>阈值</th><th>命中窗</th><th>操作</th>
+          </tr></thead>
+          <tbody id="recBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="/web/chart.js"></script>
+<script src="/web/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "model": "yolo11n-pose.pt",
+  "imgsz": 640,
+  "selection_rule": "maximum PCK minus at most 3 percentage points, minimum observed GPU p50"
+}

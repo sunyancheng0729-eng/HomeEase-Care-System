@@ -1,0 +1,17 @@
+# Algorithm 3 demo. Tested on Windows 11 with Python 3.12 (versions of the HomeEase lock file).
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0
+pydantic==2.13.5
+pyyaml==6.0.3
+onnxruntime==1.30.0
+soundfile==0.14.0
+faster-whisper==1.2.1
+# Silero VAD pulls in torch (about 200 MB). Without it the demo falls back to the energy detector and says so on the page.
+silero-vad==6.2.3
+fastapi==0.142.2
+uvicorn==0.54.0
+python-multipart==0.0.32
+tzdata==2026.5; sys_platform == "win32"
+# Only for microphone code paths of the node (algorithm3 demo does not need it): sounddevice==0.5.6

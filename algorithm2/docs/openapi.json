@@ -1,0 +1,811 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HomeEase Algorithm 2",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthState"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions": {
+      "post": {
+        "summary": "Create",
+        "operationId": "create_v1_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSession"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{session_id}/frames": {
+      "post": {
+        "summary": "Frames",
+        "operationId": "frames_v1_sessions__session_id__frames_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FrameBatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{session_id}": {
+      "get": {
+        "summary": "Get",
+        "operationId": "get_v1_sessions__session_id__get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete",
+        "operationId": "delete_v1_sessions__session_id__delete",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{session_id}/control": {
+      "post": {
+        "summary": "Control",
+        "operationId": "control_v1_sessions__session_id__control_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Control"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BatchResult": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "v1",
+            "title": "Api Version"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "paused",
+              "ended"
+            ],
+            "title": "Status"
+          },
+          "exercise": {
+            "type": "string",
+            "enum": [
+              "chair_sit_to_stand",
+              "squat",
+              "standing_leg_raise",
+              "hurdle_step"
+            ],
+            "title": "Exercise"
+          },
+          "recognized_exercise": {
+            "type": "string",
+            "title": "Recognized Exercise"
+          },
+          "exercise_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Exercise Probabilities"
+          },
+          "phase": {
+            "type": "string",
+            "title": "Phase"
+          },
+          "phase_confidence": {
+            "type": "number",
+            "title": "Phase Confidence"
+          },
+          "phase_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Phase Probabilities"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "target_reps": {
+            "type": "integer",
+            "title": "Target Reps"
+          },
+          "progress": {
+            "type": "number",
+            "title": "Progress"
+          },
+          "target_completed": {
+            "type": "boolean",
+            "title": "Target Completed"
+          },
+          "elapsed_s": {
+            "type": "number",
+            "title": "Elapsed S"
+          },
+          "active_duration_s": {
+            "type": "number",
+            "title": "Active Duration S"
+          },
+          "valid_duration_s": {
+            "type": "number",
+            "title": "Valid Duration S"
+          },
+          "quality": {
+            "type": "string",
+            "title": "Quality"
+          },
+          "last_timestamp_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Timestamp Ms"
+          },
+          "interruptions": {
+            "items": {
+              "$ref": "#/components/schemas/Interruption"
+            },
+            "type": "array",
+            "title": "Interruptions"
+          },
+          "cycles": {
+            "items": {
+              "$ref": "#/components/schemas/CycleEvent"
+            },
+            "type": "array",
+            "title": "Cycles"
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "model_validation": {
+            "type": "string",
+            "title": "Model Validation"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "accepted_frames": {
+            "type": "integer",
+            "title": "Accepted Frames"
+          },
+          "new_cycles": {
+            "items": {
+              "$ref": "#/components/schemas/CycleEvent"
+            },
+            "type": "array",
+            "title": "New Cycles"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "session_id",
+          "status",
+          "exercise",
+          "recognized_exercise",
+          "exercise_probabilities",
+          "phase",
+          "phase_confidence",
+          "phase_probabilities",
+          "count",
+          "target_reps",
+          "progress",
+          "target_completed",
+          "elapsed_s",
+          "active_duration_s",
+          "valid_duration_s",
+          "quality",
+          "last_timestamp_ms",
+          "interruptions",
+          "cycles",
+          "model_id",
+          "model_validation",
+          "request_id",
+          "accepted_frames",
+          "new_cycles"
+        ],
+        "title": "BatchResult"
+      },
+      "Control": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "pause",
+              "resume",
+              "end"
+            ],
+            "title": "Action"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "Control"
+      },
+      "CreateSession": {
+        "properties": {
+          "target_reps": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 1.0,
+            "title": "Target Reps",
+            "default": 10
+          },
+          "exercise": {
+            "type": "string",
+            "enum": [
+              "chair_sit_to_stand",
+              "squat",
+              "standing_leg_raise",
+              "hurdle_step"
+            ],
+            "title": "Exercise",
+            "default": "chair_sit_to_stand"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "CreateSession"
+      },
+      "CycleEvent": {
+        "properties": {
+          "rep_index": {
+            "type": "integer",
+            "title": "Rep Index"
+          },
+          "start_s": {
+            "type": "number",
+            "title": "Start S"
+          },
+          "end_s": {
+            "type": "number",
+            "title": "End S"
+          },
+          "duration_s": {
+            "type": "number",
+            "title": "Duration S"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rep_index",
+          "start_s",
+          "end_s",
+          "duration_s"
+        ],
+        "title": "CycleEvent"
+      },
+      "Frame": {
+        "properties": {
+          "timestamp_ms": {
+            "type": "number",
+            "maximum": 1000000000000000.0,
+            "minimum": 0.0,
+            "title": "Timestamp Ms"
+          },
+          "person_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Person Id",
+            "default": "primary"
+          },
+          "keypoints": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "maxItems": 17,
+            "minItems": 17,
+            "title": "Keypoints"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "timestamp_ms",
+          "keypoints"
+        ],
+        "title": "Frame"
+      },
+      "FrameBatch": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "coordinate_space": {
+            "type": "string",
+            "const": "camera_xy",
+            "title": "Coordinate Space",
+            "default": "camera_xy"
+          },
+          "schema_name": {
+            "type": "string",
+            "const": "coco17",
+            "title": "Schema Name",
+            "default": "coco17"
+          },
+          "frames": {
+            "items": {
+              "$ref": "#/components/schemas/Frame"
+            },
+            "type": "array",
+            "maxItems": 300,
+            "minItems": 1,
+            "title": "Frames"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "frames"
+        ],
+        "title": "FrameBatch"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthState": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ready",
+            "title": "Status"
+          },
+          "api_version": {
+            "type": "string",
+            "const": "v1",
+            "title": "Api Version"
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "session_count": {
+            "type": "integer",
+            "title": "Session Count"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "api_version",
+          "model_id",
+          "session_count"
+        ],
+        "title": "HealthState"
+      },
+      "Interruption": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "timestamp_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp Ms"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "timestamp_ms"
+        ],
+        "title": "Interruption"
+      },
+      "SessionState": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "v1",
+            "title": "Api Version"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "paused",
+              "ended"
+            ],
+            "title": "Status"
+          },
+          "exercise": {
+            "type": "string",
+            "enum": [
+              "chair_sit_to_stand",
+              "squat",
+              "standing_leg_raise",
+              "hurdle_step"
+            ],
+            "title": "Exercise"
+          },
+          "recognized_exercise": {
+            "type": "string",
+            "title": "Recognized Exercise"
+          },
+          "exercise_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Exercise Probabilities"
+          },
+          "phase": {
+            "type": "string",
+            "title": "Phase"
+          },
+          "phase_confidence": {
+            "type": "number",
+            "title": "Phase Confidence"
+          },
+          "phase_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Phase Probabilities"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "target_reps": {
+            "type": "integer",
+            "title": "Target Reps"
+          },
+          "progress": {
+            "type": "number",
+            "title": "Progress"
+          },
+          "target_completed": {
+            "type": "boolean",
+            "title": "Target Completed"
+          },
+          "elapsed_s": {
+            "type": "number",
+            "title": "Elapsed S"
+          },
+          "active_duration_s": {
+            "type": "number",
+            "title": "Active Duration S"
+          },
+          "valid_duration_s": {
+            "type": "number",
+            "title": "Valid Duration S"
+          },
+          "quality": {
+            "type": "string",
+            "title": "Quality"
+          },
+          "last_timestamp_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Timestamp Ms"
+          },
+          "interruptions": {
+            "items": {
+              "$ref": "#/components/schemas/Interruption"
+            },
+            "type": "array",
+            "title": "Interruptions"
+          },
+          "cycles": {
+            "items": {
+              "$ref": "#/components/schemas/CycleEvent"
+            },
+            "type": "array",
+            "title": "Cycles"
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "model_validation": {
+            "type": "string",
+            "title": "Model Validation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "session_id",
+          "status",
+          "exercise",
+          "recognized_exercise",
+          "exercise_probabilities",
+          "phase",
+          "phase_confidence",
+          "phase_probabilities",
+          "count",
+          "target_reps",
+          "progress",
+          "target_completed",
+          "elapsed_s",
+          "active_duration_s",
+          "valid_duration_s",
+          "quality",
+          "last_timestamp_ms",
+          "interruptions",
+          "cycles",
+          "model_id",
+          "model_validation"
+        ],
+        "title": "SessionState"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

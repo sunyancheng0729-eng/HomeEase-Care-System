@@ -1,0 +1,61 @@
+{
+  "video_alone_fps": {
+    "median": 0.0,
+    "samples": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      15.0,
+      15.0,
+      14.04,
+      14.04
+    ]
+  },
+  "joint_video_sensor": {
+    "windows": 13,
+    "fps_median": 15.0,
+    "fps_samples": [
+      13.9,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      14.16,
+      14.16,
+      14.16,
+      14.16,
+      14.16,
+      14.16
+    ]
+  },
+  "shared_exercise": {
+    "status": "running",
+    "quality": "insufficient_pose",
+    "elapsed_s": 5.038447900005849,
+    "frame_shape": [
+      480,
+      640,
+      3
+    ],
+    "runtime": {
+      "observation_fps_median": 30.0,
+      "pose_ms_median": 15.76,
+      "processing_ms_median": 18.259999999999998,
+      "max_sampled_gap_ms": 49.42,
+      "timestamp_gap_interruptions": 0
+    }
+  },
+  "independent_stop_restart_pause_resume": true
+}

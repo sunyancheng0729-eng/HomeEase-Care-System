@@ -1,0 +1,19 @@
+# 本系统在 animedev 环境（Python 3.12）下开发与运行，以下依赖**均已具备**，
+# 无需额外安装：
+#   fastapi, uvicorn, pydantic, jinja2   —— Web 服务
+#   numpy, scipy, pandas                 —— 信号处理
+#   scikit-learn, xgboost                —— RF(400) + XGB(400)
+#   joblib                               —— 模型序列化
+#   sqlite3                              —— Python 标准库（无需安装）
+#
+# 如需在干净环境复现：
+#   E:/anaconda3/envs/animedev/python.exe -m pip install -r requirements.txt
+fastapi
+uvicorn
+pydantic
+numpy
+scipy
+pandas
+scikit-learn
+xgboost
+joblib

@@ -1,0 +1,92 @@
+{
+ "schema": "f3-scenes/1",
+ "name": "fall_help_call",
+ "seed": 42,
+ "description": "A thud, a cry, and the person calls for help when asked 'Do you need help?' (suspected fall at 4 s).",
+ "sample_rate": 16000,
+ "duration_s": 24.0,
+ "background_dbfs": -48.0,
+ "scene_gain_db": 0.0,
+ "truth": [
+  {
+   "kind": "thud",
+   "t0_s": 4.106,
+   "t1_s": 4.498,
+   "expect": "IMPACT"
+  },
+  {
+   "kind": "scream",
+   "t0_s": 5.306,
+   "t1_s": 6.181,
+   "expect": "HELP"
+  },
+  {
+   "kind": "reply",
+   "t0_s": 9.167,
+   "t1_s": 12.412,
+   "expect": null,
+   "voice": "Zira",
+   "text": "Help me, I fell and I cannot get up.",
+   "speaker_role": "self"
+  }
+ ],
+ "inquiry": {
+  "fall_at_s": 4.0,
+  "prompt_s": 4.0,
+  "inquiry_start_s": 8.0,
+  "window_s": 10.0,
+  "level": "emergency",
+  "reply_voice": "Zira",
+  "reply_text": "Help me, I fell and I cannot get up.",
+  "reply_role": "self",
+  "reply_t0_s": 9.167,
+  "note": "the fall event is scripted: audio never creates or cancels an event; the reply is read from the scene timeline like a microphone window"
+ },
+ "sources": [
+  {
+   "role": "background",
+   "source": "esc50",
+   "file": "5-238021-A-35.wav",
+   "subtype": "washing_machine",
+   "fold": 5,
+   "group": "esc50:238021",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "5b3fb9d4fa999f75e8e7ca37e96304322beb04a73949a64012eabba0834f6fbf"
+  },
+  {
+   "role": "thud",
+   "source": "fsd50k",
+   "file": "383750.wav",
+   "subtype": "Thump_and_thud",
+   "fold": 5,
+   "group": "fsd50k:Jay_You",
+   "held_out": true,
+   "license": "http://creativecommons.org/licenses/by/3.0/",
+   "sha256": "299225ba31df40467799a911d22ddc717e3d8a5ae4d1a5721a39ff27fa851466"
+  },
+  {
+   "role": "scream",
+   "source": "vivae",
+   "file": "S07_fear_peak_02.wav",
+   "subtype": "fear/peak",
+   "fold": 5,
+   "group": "vivae:S07",
+   "held_out": true,
+   "license": "CC BY-NC 4.0",
+   "sha256": "68f4e96d3e48b16dcbb6699b2fc0d519e19d3964d1028ac7b3781807119f769e"
+  },
+  {
+   "role": "reply",
+   "source": "tts",
+   "voice": "Zira",
+   "text": "Help me, I fell and I cannot get up.",
+   "speaker_role": "self",
+   "language": "en",
+   "license": "synthesised on the fly by the operating-system voice"
+  }
+ ],
+ "note": "synthetic scene built from clean public clips and TTS; a plumbing demo, not household or older-adult audio; sources come from the held-out fold of the sound model (held_out=true)",
+ "wav_sha256": "2c8ed5f630ef1156c1d4591de4084da9e2194c0563851cdf8e6a8b86774eb90c",
+ "wav_bytes": 768044
+}

@@ -1,0 +1,13 @@
+.venv/
+runtime/
+/algorithm1/video/records/
+/algorithm1/video/uploads/
+__pycache__/
+.pytest_cache/
+*.pyc
+node_modules/
+artifacts/browser/
+.env
+.env.*
+!.env.example
+*.log

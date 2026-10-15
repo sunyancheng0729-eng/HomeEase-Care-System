@@ -1,0 +1,17 @@
+{
+  "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.0",
+    "matplotlib": "3.11.1",
+    "opencv-python": "5.0.0.93",
+    "ultralytics": "8.4.174",
+    "fastapi": "0.142.4",
+    "uvicorn": "0.54.0",
+    "pytest": "9.1.1"
+  }
+}

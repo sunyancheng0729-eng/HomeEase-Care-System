@@ -1,0 +1,12 @@
+{% set channel_names = {'vision':'视频','accel':'加速度','audio':'音频'} %}
+{% set delivery_names = {'queued':'排队中','retry':'重试中','failed':'发送失败','delivered':'已送达','seen':'已查看'} %}
+{% if event %}
+<h2>事件发生时的监测覆盖</h2>
+<table><thead><tr><th>通道</th><th>状态</th><th>原因</th><th>本次状态起始</th></tr></thead><tbody>
+{% for c in event.channel_quality|default([]) %}<tr><td>{{ channel_names.get(c.channel,c.channel) }}</td><td>{{ {'active':'有效','reduced':'受限','unavailable':'不可用'}.get(c.state,c.state) }}</td><td>{{ c.reason }}</td><td><time>{{ c.started_at }}</time></td></tr>{% else %}<tr><td colspan="4">该历史记录未保存通道状态</td></tr>{% endfor %}
+</tbody></table>
+{% endif %}
+<h2>通知记录</h2>
+<div class="table-wrap"><table><thead><tr><th>渠道 / 联系人</th><th>状态 / 尝试</th><th>排队时间</th><th>送达时间</th><th>查看时间</th></tr></thead><tbody>
+{% for n in notifications if n.event_id %}<tr><td>{{ '站内通知' if n.kind == 'inapp' else 'Webhook' }} / {{ n.contact.name if n.contact else '照护工作台' }}</td><td>{{ delivery_names.get(n.status,n.status) }} / {{ n.attempts }}</td><td><time>{{ n.created_at }}</time></td><td>{% if n.delivered_at %}<time>{{ n.delivered_at }}</time>{% else %}--{% endif %}</td><td>{% if n.seen_at %}<time>{{ n.seen_at }}</time>{% else %}--{% endif %}</td></tr>{% else %}<tr><td colspan="5">暂无事件通知</td></tr>{% endfor %}
+</tbody></table></div>

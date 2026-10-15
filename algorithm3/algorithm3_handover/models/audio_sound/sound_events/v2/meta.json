@@ -1,0 +1,183 @@
+{
+  "schema": "audio_sound/1",
+  "task": "audio_sound",
+  "model_id": "sound_events",
+  "version": "v2",
+  "kind": "sklearn",
+  "classes": [
+    "HELP",
+    "IMPACT",
+    "ABNORMAL",
+    "DAILY"
+  ],
+  "input": {
+    "sample_rate": 16000,
+    "window_s": 2.0,
+    "representation": "yamnet_embedding",
+    "normalization": "rms",
+    "embedder": "yamnet",
+    "embedder_sha256": "d3835ffbbd4a1bb3e777f0ca217b5007907f5171dd5d17c4236b95b2af8f908e"
+  },
+  "thresholds": {
+    "min_conf": 0.85,
+    "per_class": {
+      "HELP": 0.42,
+      "IMPACT": 0.99,
+      "ABNORMAL": 0.91,
+      "DAILY": 0.52
+    },
+    "chosen_on": "dev: out-of-fold predictions of folds 1,2,3,4",
+    "precision_target": 0.9,
+    "detail": {
+      "per_class": {
+        "HELP": {
+          "cutoff": 0.42,
+          "target_met": false,
+          "fallback": "max_dev_f1",
+          "dev_precision": 0.502283105022831,
+          "dev_accepted": 438,
+          "dev_recall": 0.676923076923077,
+          "dev_f1": 0.5766710353866318,
+          "dev_support": 325
+        },
+        "IMPACT": {
+          "cutoff": 0.99,
+          "target_met": true,
+          "fallback": null,
+          "dev_precision": 0.925,
+          "dev_accepted": 40,
+          "dev_recall": 0.5,
+          "dev_f1": 0.6491228070175439,
+          "dev_support": 74
+        },
+        "ABNORMAL": {
+          "cutoff": 0.91,
+          "target_met": true,
+          "fallback": null,
+          "dev_precision": 0.9145299145299145,
+          "dev_accepted": 117,
+          "dev_recall": 0.3715277777777778,
+          "dev_f1": 0.5283950617283951,
+          "dev_support": 288
+        },
+        "DAILY": {
+          "cutoff": 0.52,
+          "target_met": true,
+          "fallback": null,
+          "dev_precision": 0.9027196652719666,
+          "dev_accepted": 956,
+          "dev_recall": 0.7021969080553295,
+          "dev_f1": 0.7899313501144165,
+          "dev_support": 1229
+        }
+      },
+      "global": 0.85,
+      "global_target_met": true,
+      "target_precision": 0.9,
+      "dev_windows": 1916
+    }
+  },
+  "calibration": null,
+  "training": {
+    "mapping_version": "esc50-vivae-homeease-v2",
+    "candidate": "yamnet_embedding+logreg",
+    "seed": 42,
+    "split": {
+      "dev_folds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "test_fold": 5,
+      "by": "group: ESC-50 source recording, VIVAE speaker, FSD50K uploader, LibriSpeech speaker"
+    },
+    "samples": {
+      "clips": 2382,
+      "by_source_class": {
+        "esc50": {
+          "DAILY": 760,
+          "IMPACT": 40,
+          "ABNORMAL": 160
+        },
+        "vivae": {
+          "DAILY": 550,
+          "ABNORMAL": 174,
+          "HELP": 277
+        },
+        "fsd50k": {
+          "HELP": 130,
+          "IMPACT": 45,
+          "ABNORMAL": 25,
+          "DAILY": 65
+        },
+        "librispeech": {
+          "DAILY": 156
+        }
+      },
+      "by_fold": {
+        "1": {
+          "DAILY": 338,
+          "IMPACT": 18,
+          "ABNORMAL": 79,
+          "HELP": 80
+        },
+        "2": {
+          "DAILY": 298,
+          "ABNORMAL": 77,
+          "IMPACT": 17,
+          "HELP": 78
+        },
+        "3": {
+          "DAILY": 294,
+          "ABNORMAL": 67,
+          "IMPACT": 18,
+          "HELP": 89
+        },
+        "4": {
+          "ABNORMAL": 65,
+          "DAILY": 299,
+          "IMPACT": 21,
+          "HELP": 78
+        },
+        "5": {
+          "ABNORMAL": 71,
+          "DAILY": 302,
+          "IMPACT": 11,
+          "HELP": 82
+        }
+      },
+      "groups": {
+        "esc50": 800,
+        "fsd50k": 171,
+        "librispeech": 26,
+        "vivae": 11
+      }
+    },
+    "dev_macro_f1_by_candidate": {
+      "mfcc_logmel_stats+rf": 0.644724366496898,
+      "mfcc_logmel_stats+logreg": 0.6007539728913034,
+      "logmel_small_cnn": 0.5754063875389229,
+      "yamnet_embedding+logreg": 0.6754423903459035
+    },
+    "test": {
+      "fold": 5,
+      "n_windows": 466,
+      "macro_f1_with_cutoffs": 0.6582450608080377,
+      "macro_f1_argmax": 0.6604656255316558,
+      "macro_f1_ci95": [
+        0.5409797124065003,
+        0.8187353698719007
+      ],
+      "help_recall_with_cutoffs": 0.6097560975609756,
+      "help_precision_with_cutoffs": 0.5747126436781609,
+      "coverage": 0.7703862660944206
+    },
+    "run_id": "20261008-003505_audio_A2b_sound_model_01e89411b8",
+    "intended_use": "assistive hint only; trained on public clean / acted corpora, not validated on household or older-adult audio"
+  },
+  "weights": "model.joblib",
+  "sha256": "9f59dfe03acbf6170faab9f41d03654bd78ac202486f7574fc616187542b702b",
+  "code_version": "6b27b35151fd",
+  "created_at": "2026-10-07T16:43:21Z"
+}

@@ -1,0 +1,46 @@
+{
+ "schema": "f3-scenes/1",
+ "name": "glass_break",
+ "seed": 42,
+ "description": "Breaking glass in a quiet home.",
+ "sample_rate": 16000,
+ "duration_s": 20.0,
+ "background_dbfs": -48.0,
+ "scene_gain_db": 0.0,
+ "truth": [
+  {
+   "kind": "glass",
+   "t0_s": 8.089,
+   "t1_s": 13.089,
+   "expect": "ABNORMAL"
+  }
+ ],
+ "inquiry": null,
+ "sources": [
+  {
+   "role": "background",
+   "source": "esc50",
+   "file": "5-141683-A-35.wav",
+   "subtype": "washing_machine",
+   "fold": 5,
+   "group": "esc50:141683",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "c8ac3bafa369ff4bcfef515f00060c963f4c19d9275ada75edbc8cdb9c1ad591"
+  },
+  {
+   "role": "glass",
+   "source": "esc50",
+   "file": "5-260433-A-39.wav",
+   "subtype": "glass_breaking",
+   "fold": 5,
+   "group": "esc50:260433",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "04a46ed54d5159b4afa7015d9799901a2806f3012507fa6bc923e23124efcdfc"
+  }
+ ],
+ "note": "synthetic scene built from clean public clips and TTS; a plumbing demo, not household or older-adult audio; sources come from the held-out fold of the sound model (held_out=true)",
+ "wav_sha256": "43fce6fc48b9cf99b33d0680aefea7cae652dad8882aba113166828f646eaf20",
+ "wav_bytes": 640044
+}

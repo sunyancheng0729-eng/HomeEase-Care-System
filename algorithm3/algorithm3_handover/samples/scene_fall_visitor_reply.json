@@ -1,0 +1,75 @@
+{
+ "schema": "f3-scenes/1",
+ "name": "fall_visitor_reply",
+ "seed": 42,
+ "description": "A thud; a different voice (a visitor) answers 'she is fine' when asked (suspected fall at 4 s).",
+ "sample_rate": 16000,
+ "duration_s": 24.0,
+ "background_dbfs": -48.0,
+ "scene_gain_db": 0.0,
+ "truth": [
+  {
+   "kind": "thud",
+   "t0_s": 4.029,
+   "t1_s": 6.891,
+   "expect": "IMPACT"
+  },
+  {
+   "kind": "reply",
+   "t0_s": 9.164,
+   "t1_s": 11.849,
+   "expect": null,
+   "voice": "David",
+   "text": "Don't worry, she is fine.",
+   "speaker_role": "visitor"
+  }
+ ],
+ "inquiry": {
+  "fall_at_s": 4.0,
+  "prompt_s": 4.0,
+  "inquiry_start_s": 8.0,
+  "window_s": 10.0,
+  "level": "emergency",
+  "reply_voice": "David",
+  "reply_text": "Don't worry, she is fine.",
+  "reply_role": "visitor",
+  "reply_t0_s": 9.164,
+  "note": "the fall event is scripted: audio never creates or cancels an event; the reply is read from the scene timeline like a microphone window"
+ },
+ "sources": [
+  {
+   "role": "background",
+   "source": "esc50",
+   "file": "5-181977-A-35.wav",
+   "subtype": "washing_machine",
+   "fold": 5,
+   "group": "esc50:181977",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "f04401db719f20052c3c7497a5893f644473f08a05f4820200b36076079f7951"
+  },
+  {
+   "role": "thud",
+   "source": "fsd50k",
+   "file": "389999.wav",
+   "subtype": "Thump_and_thud",
+   "fold": 5,
+   "group": "fsd50k:morganveilleux",
+   "held_out": true,
+   "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+   "sha256": "eb5bf6a143589ea6ba817ac217a1494253e56b952eb142ef744a3abb005b245a"
+  },
+  {
+   "role": "reply",
+   "source": "tts",
+   "voice": "David",
+   "text": "Don't worry, she is fine.",
+   "speaker_role": "visitor",
+   "language": "en",
+   "license": "synthesised on the fly by the operating-system voice"
+  }
+ ],
+ "note": "synthetic scene built from clean public clips and TTS; a plumbing demo, not household or older-adult audio; sources come from the held-out fold of the sound model (held_out=true)",
+ "wav_sha256": "83df855c3ed3af30ed1a5039b7172ef316418e65114ee3eb6d6c64f014fd2b65",
+ "wav_bytes": 768044
+}

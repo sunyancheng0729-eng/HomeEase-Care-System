@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实时跌倒检测监控系统</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">🛡</span>实时跌倒检测监控系统
+    <span class="pipe">|</span>
+    <span class="sub">YOLO 人体检测 → 自研 P1 姿态估计 → A4 混合集成时序判定</span>
+  </div>
+  <nav class="nav">
+    <a href="/" class="active">监控台</a>
+    <a href="/report">跌倒报告</a>
+  </nav>
+  <div class="conn"><span id="connDot" class="dot"></span><span id="connText">连接中…</span></div>
+</header>
+
+<main class="layout">
+  <!-- ============================ 左：画面 + 控制 ============================ -->
+  <section class="left">
+    <div class="card video-card">
+      <div class="video-wrap">
+        <img id="live" alt="实时画面">
+        <div class="badge-alarm" id="alarmBadge">报警中</div>
+        <div class="alarm-flash" id="alarmFlash"><span>⚠ 检测到跌倒</span></div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-item"><label>输入源</label><span id="mSource">—</span></div>
+        <div class="meta-item"><label>状态</label><span id="mState">待机</span></div>
+        <div class="meta-item"><label>已处理帧</label><span id="mFrames">0</span></div>
+        <div class="meta-item"><label>推理速率</label><span id="mFps">0 fps</span></div>
+        <div class="meta-item"><label>运行时长</label><span id="mElapsed">0s</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>输入源选择</h2>
+      <div class="seg" id="segType">
+        <button data-type="camera" class="on">摄像头</button>
+        <button data-type="file">本地视频</button>
+        <button data-type="demo">内置示例数据</button>
+      </div>
+
+      <div class="pane" id="paneCamera">
+        <label>摄像头序号
+          <input id="camIndex" type="number" value="0" min="0" step="1">
+        </label>
+        <span class="hint">笔记本内置摄像头一般为 0，外接设备依次为 1、2…</span>
+      </div>
+
+      <div class="pane hidden" id="paneFile">
+        <div class="row">
+          <input id="filePath" type="text" placeholder="例如 C:\videos\fall.mp4，或点击右侧上传">
+          <button class="ghost" id="btnPick">选择并上传</button>
+          <input id="fileInput" type="file" accept="video/*" hidden>
+        </div>
+        <span class="hint" id="uploadHint">支持 mp4 / avi / mov 等常见格式；上传完成后路径会自动填入。</span>
+      </div>
+
+      <div class="pane hidden" id="paneDemo">
+        <div class="row">
+          <select id="demoDataset"></select>
+          <select id="demoSeq"></select>
+        </div>
+        <span class="hint">内置示例来自 URFD、Le2i、多摄像头跌倒数据集，可直接验证系统是否正常工作。</span>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="btnStart">开始检测</button>
+        <button class="danger" id="btnStop" disabled>停止</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 右：判定 + 参数 + 记录 ============================ -->
+  <aside class="right">
+    <div class="card prob-card">
+      <h2>实时判定</h2>
+      <div class="prob-ring" id="probRing">
+        <div class="prob-num" id="pNum">0.00</div>
+        <div class="prob-label">P(FALL)</div>
+      </div>
+      <div class="bar"><div class="bar-fill" id="pBar"></div><div class="bar-thr" id="pThr"></div></div>
+      <div class="verdict" id="verdict">待机</div>
+      <div class="peak">本次会话峰值 <b id="pPeak">0.00</b></div>
+      <div class="gt hidden" id="gtBox">
+        数据集标注区间（仅供参考）
+        <b id="gtText">—</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>检测参数</h2>
+      <label class="slider">跌倒判定阈值 <output id="thrOut">0.60</output>
+        <input id="thr" type="range" min="0.2" max="0.95" step="0.05" value="0.6">
+      </label>
+      <label class="slider">报警冷却（秒） <output id="cdOut">6</output>
+        <input id="cd" type="range" min="1" max="30" step="1" value="6">
+      </label>
+      <label class="slider">前置录像（秒） <output id="preOut">1.0s</output>
+        <input id="pre" type="range" min="0" max="2" step="0.5" value="1">
+      </label>
+      <p class="hint">录像总长固定 3 秒 = 前置 + 后置。阈值越低越灵敏（可能更多误报），越高越保守。</p>
+    </div>
+
+    <div class="card">
+      <h2>画面叠加</h2>
+      <label class="switch">
+        <input type="checkbox" id="swSkel" checked>
+        <span>检测框 + 人体骨架</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="swHud">
+        <span>顶部信息条 + <code>P(fall)</code> 文字 + 概率条</span>
+      </label>
+      <p class="hint">只影响显示与录像的观感：送进模型的一直是原始帧，叠加发生在三段推理之后，不影响判定。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>跌倒记录</h2>
+        <a class="link" href="/report">查看完整报告 →</a>
+      </div>
+      <div class="stat-inline">
+        <div><label>本次会话命中</label><b id="nFalls">0</b></div>
+        <div><label>记录总数</label><b id="nRec">0</b></div>
+      </div>
+      <ul class="rec-list" id="recList"><li class="empty">暂无记录</li></ul>
+    </div>
+  </aside>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+[
+  {
+    "api_version": "v1",
+    "session_id": "local",
+    "status": "ended",
+    "exercise": "chair_sit_to_stand",
+    "recognized_exercise": "chair_sit_to_stand",
+    "exercise_probabilities": {
+      "chair_sit_to_stand": 0.8486790657043457,
+      "squat": 0.010311538353562355,
+      "standing_leg_raise": 0.10681074112653732,
+      "hurdle_step": 0.01752859726548195,
+      "other": 0.016669986769557
+    },
+    "phase": "standing",
+    "phase_confidence": 0.8402230739593506,
+    "phase_probabilities": {
+      "sitting": 0.0023511339094885717,
+      "rising": 0.004809986539357427,
+      "standing": 0.9900362800897098,
+      "lowering": 0.0028025994614442576,
+      "other": 0.0
+    },
+    "count": 9,
+    "target_reps": 9,
+    "progress": 1.0,
+    "target_completed": true,
+    "elapsed_s": 26.3,
+    "active_duration_s": 26.299999999999645,
+    "valid_duration_s": 26.299999999999645,
+    "quality": "good",
+    "last_timestamp_ms": 26300.0,
+    "interruptions": [],
+    "cycles": [
+      {
+        "rep_index": 1,
+        "start_s": 0.7999999999999999,
+        "end_s": 3.3999999999999977,
+        "duration_s": 2.599999999999998
+      },
+      {
+        "rep_index": 2,
+        "start_s": 3.3999999999999977,
+        "end_s": 5.933333333333322,
+        "duration_s": 2.5333333333333243
+      },
+      {
+        "rep_index": 3,
+        "start_s": 5.933333333333322,
+        "end_s": 8.59999999999998,
+        "duration_s": 2.666666666666658
+      },
+      {
+        "rep_index": 4,
+        "start_s": 8.59999999999998,
+        "end_s": 11.49999999999997,
+        "duration_s": 2.8999999999999897
+      },
+      {
+        "rep_index": 5,
+        "start_s": 11.49999999999997,
+        "end_s": 13.999999999999961,
+        "duration_s": 2.499999999999991
+      },
+      {
+        "rep_index": 6,
+        "start_s": 13.999999999999961,
+        "end_s": 16.63333333333332,
+        "duration_s": 2.6333333333333577
+      },
+      {
+        "rep_index": 7,
+        "start_s": 16.63333333333332,
+        "end_s": 19.233333333333448,
+        "duration_s": 2.6000000000001293
+      },
+      {
+        "rep_index": 8,
+        "start_s": 19.233333333333448,
+        "end_s": 22.033333333333587,
+        "duration_s": 2.8000000000001393
+      },
+      {
+        "rep_index": 9,
+        "start_s": 22.033333333333587,
+        "end_s": 24.66666666666705,
+        "duration_s": 2.6333333333334643
+      }
+    ],
+    "model_id": "opt_tcn_b4_w48",
+    "model_validation": "public_mocap_weak_phase_reconstructed_replay",
+    "reference_count": 9,
+    "source": "s09_m05_reconstructed",
+    "http_count": 9
+  },
+  {
+    "api_version": "v1",
+    "session_id": "local",
+    "status": "ended",
+    "exercise": "squat",
+    "recognized_exercise": "squat",
+    "exercise_probabilities": {
+      "chair_sit_to_stand": 0.006151838228106499,
+      "squat": 0.9693000912666321,
+      "standing_leg_raise": 0.008820042945444584,
+      "hurdle_step": 0.007996710948646069,
+      "other": 0.007731414400041103
+    },
+    "phase": "standing",
+    "phase_confidence": 0.9419024586677551,
+    "phase_probabilities": {
+      "standing": 0.9717346653855705,
+      "lowering": 0.010150129013703862,
+      "squatting": 0.007315919900026903,
+      "rising": 0.010799285700698694,
+      "other": 0.0
+    },
+    "count": 10,
+    "target_reps": 10,
+    "progress": 1.0,
+    "target_completed": true,
+    "elapsed_s": 29.533333332999998,
+    "active_duration_s": 29.533333332999575,
+    "valid_duration_s": 29.533333332999575,
+    "quality": "good",
+    "last_timestamp_ms": 29533.333333,
+    "interruptions": [],
+    "cycles": [
+      {
+        "rep_index": 1,
+        "start_s": 0.03333333333333333,
+        "end_s": 2.8,
+        "duration_s": 2.7666666666666666
+      },
+      {
+        "rep_index": 2,
+        "start_s": 2.8,
+        "end_s": 5.866666666666656,
+        "duration_s": 3.0666666666666558
+      },
+      {
+        "rep_index": 3,
+        "start_s": 5.866666666666656,
+        "end_s": 8.833333333333313,
+        "duration_s": 2.966666666666657
+      },
+      {
+        "rep_index": 4,
+        "start_s": 8.833333333333313,
+        "end_s": 11.633333333333303,
+        "duration_s": 2.79999999999999
+      },
+      {
+        "rep_index": 5,
+        "start_s": 11.633333333333303,
+        "end_s": 14.49999999999996,
+        "duration_s": 2.8666666666666565
+      },
+      {
+        "rep_index": 6,
+        "start_s": 14.49999999999996,
+        "end_s": 17.200000000000014,
+        "duration_s": 2.7000000000000544
+      },
+      {
+        "rep_index": 7,
+        "start_s": 17.200000000000014,
+        "end_s": 20.066666666666823,
+        "duration_s": 2.8666666666668092
+      },
+      {
+        "rep_index": 8,
+        "start_s": 20.066666666666823,
+        "end_s": 23.133333333333642,
+        "duration_s": 3.066666666666819
+      },
+      {
+        "rep_index": 9,
+        "start_s": 23.133333333333642,
+        "end_s": 26.100000000000456,
+        "duration_s": 2.9666666666668142
+      },
+      {
+        "rep_index": 10,
+        "start_s": 26.100000000000456,
+        "end_s": 28.93333333333393,
+        "duration_s": 2.8333333333334743
+      }
+    ],
+    "model_id": "opt_tcn_b4_w48",
+    "model_validation": "public_mocap_weak_phase_reconstructed_replay",
+    "reference_count": 10,
+    "source": "s09_m01_reconstructed",
+    "http_count": 10
+  },
+  {
+    "api_version": "v1",
+    "session_id": "local",
+    "status": "ended",
+    "exercise": "standing_leg_raise",
+    "recognized_exercise": "standing_leg_raise",
+    "exercise_probabilities": {
+      "chair_sit_to_stand": 0.01788998767733574,
+      "squat": 0.004050732124596834,
+      "standing_leg_raise": 0.9678202867507935,
+      "hurdle_step": 0.003145780647173524,
+      "other": 0.007093377877026796
+    },
+    "phase": "standing",
+    "phase_confidence": 0.9478081464767456,
+    "phase_probabilities": {
+      "standing": 0.9793224700375807,
+      "lifting": 0.005763129569817895,
+      "raised": 0.008655377443946892,
+      "lowering": 0.006259022948654604,
+      "other": 0.0
+    },
+    "count": 10,
+    "target_reps": 10,
+    "progress": 1.0,
+    "target_completed": true,
+    "elapsed_s": 19.033333332999998,
+    "active_duration_s": 19.0333333329998,
+    "valid_duration_s": 19.0333333329998,
+    "quality": "good",
+    "last_timestamp_ms": 19033.333333,
+    "interruptions": [],
+    "cycles": [
+      {
+        "rep_index": 1,
+        "start_s": 0.03333333333333333,
+        "end_s": 1.633333333333335,
+        "duration_s": 1.6000000000000016
+      },
+      {
+        "rep_index": 2,
+        "start_s": 1.633333333333335,
+        "end_s": 3.5333333333333306,
+        "duration_s": 1.8999999999999955
+      },
+      {
+        "rep_index": 3,
+        "start_s": 3.5333333333333306,
+        "end_s": 5.433333333333324,
+        "duration_s": 1.8999999999999932
+      },
+      {
+        "rep_index": 4,
+        "start_s": 5.433333333333324,
+        "end_s": 7.266666666666651,
+        "duration_s": 1.8333333333333268
+      },
+      {
+        "rep_index": 5,
+        "start_s": 7.266666666666651,
+        "end_s": 9.099999999999978,
+        "duration_s": 1.8333333333333277
+      },
+      {
+        "rep_index": 6,
+        "start_s": 9.099999999999978,
+        "end_s": 10.966666666666638,
+        "duration_s": 1.86666666666666
+      },
+      {
+        "rep_index": 7,
+        "start_s": 10.966666666666638,
+        "end_s": 12.733333333333299,
+        "duration_s": 1.7666666666666604
+      },
+      {
+        "rep_index": 8,
+        "start_s": 12.733333333333299,
+        "end_s": 14.599999999999959,
+        "duration_s": 1.86666666666666
+      },
+      {
+        "rep_index": 9,
+        "start_s": 14.599999999999959,
+        "end_s": 16.466666666666644,
+        "duration_s": 1.866666666666685
+      },
+      {
+        "rep_index": 10,
+        "start_s": 16.466666666666644,
+        "end_s": 18.433333333333408,
+        "duration_s": 1.9666666666667645
+      }
+    ],
+    "model_id": "opt_tcn_b4_w48",
+    "model_validation": "public_mocap_weak_phase_reconstructed_replay",
+    "reference_count": 10,
+    "source": "s09_m06_reconstructed",
+    "http_count": 10
+  },
+  {
+    "api_version": "v1",
+    "session_id": "local",
+    "status": "ended",
+    "exercise": "hurdle_step",
+    "recognized_exercise": "hurdle_step",
+    "exercise_probabilities": {
+      "chair_sit_to_stand": 0.019230064004659653,
+      "squat": 0.012989675626158714,
+      "standing_leg_raise": 0.00688374787569046,
+      "hurdle_step": 0.9535528421401978,
+      "other": 0.007343675941228867
+    },
+    "phase": "standing",
+    "phase_confidence": 0.9339509010314941,
+    "phase_probabilities": {
+      "standing": 0.9794432522800652,
+      "stepping": 0.005409535207180893,
+      "raised": 0.006444209474737565,
+      "returning": 0.008703003038016348,
+      "other": 0.0
+    },
+    "count": 10,
+    "target_reps": 10,
+    "progress": 1.0,
+    "target_completed": true,
+    "elapsed_s": 21.433333333,
+    "active_duration_s": 21.433333332999748,
+    "valid_duration_s": 21.433333332999748,
+    "quality": "good",
+    "last_timestamp_ms": 21433.333333,
+    "interruptions": [],
+    "cycles": [
+      {
+        "rep_index": 1,
+        "start_s": 0.03333333333333333,
+        "end_s": 1.8000000000000023,
+        "duration_s": 1.7666666666666688
+      },
+      {
+        "rep_index": 2,
+        "start_s": 1.8000000000000023,
+        "end_s": 3.73333333333333,
+        "duration_s": 1.9333333333333276
+      },
+      {
+        "rep_index": 3,
+        "start_s": 3.73333333333333,
+        "end_s": 5.833333333333322,
+        "duration_s": 2.0999999999999925
+      },
+      {
+        "rep_index": 4,
+        "start_s": 5.833333333333322,
+        "end_s": 7.933333333333315,
+        "duration_s": 2.0999999999999925
+      },
+      {
+        "rep_index": 5,
+        "start_s": 7.933333333333315,
+        "end_s": 9.966666666666642,
+        "duration_s": 2.033333333333327
+      },
+      {
+        "rep_index": 6,
+        "start_s": 9.966666666666642,
+        "end_s": 12.066666666666634,
+        "duration_s": 2.0999999999999925
+      },
+      {
+        "rep_index": 7,
+        "start_s": 12.066666666666634,
+        "end_s": 14.233333333333293,
+        "duration_s": 2.166666666666659
+      },
+      {
+        "rep_index": 8,
+        "start_s": 14.233333333333293,
+        "end_s": 16.2333333333333,
+        "duration_s": 2.0000000000000053
+      },
+      {
+        "rep_index": 9,
+        "start_s": 16.2333333333333,
+        "end_s": 18.366666666666738,
+        "duration_s": 2.1333333333334394
+      },
+      {
+        "rep_index": 10,
+        "start_s": 18.366666666666738,
+        "end_s": 20.733333333333523,
+        "duration_s": 2.3666666666667844
+      }
+    ],
+    "model_id": "opt_tcn_b4_w48",
+    "model_validation": "public_mocap_weak_phase_reconstructed_replay",
+    "reference_count": 10,
+    "source": "s09_m02_reconstructed",
+    "http_count": 10
+  }
+]

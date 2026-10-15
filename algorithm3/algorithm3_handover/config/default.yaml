@@ -1,0 +1,230 @@
+# HomeEase default configuration (mirrors homeease.core.config defaults; tests/test_config.py checks they match).
+# These are engineering starting points, NOT validated optimal thresholds. Values chosen on validation data are
+# stored with their provenance in model packages (models/*/meta.json) and experiment artifacts.
+# Secrets never go here: use environment variables / var/secrets.
+runtime:
+  mode: live
+  timezone: Asia/Singapore
+  synthetic_fallback: false
+  tick_ms: 100
+  subject_id: elder-01
+  room_id: living-room
+  replay_recording: null
+  replay_speed: 1.0
+  replay_loop: false
+server:
+  host: 0.0.0.0
+  port: 8443
+  https: true
+  certfile: var/certs/server.crt
+  keyfile: var/certs/server.key
+  database_url: sqlite:///var/homeease.db
+  session_ttl_hours: 72
+  cors_origins: []
+  max_body_bytes: 262144
+  login_attempts_per_minute: 10
+demo:
+  # demonstration mode: no login; tabs switch between the older adult, caregiver and technical views
+  enabled: false
+  loopback_only: true
+debug:
+  enabled: true
+  allow_injection: true
+  skeleton_preview: local_only
+acquisition:
+  accel_target_hz: 50.0
+  accel_batch_ms: 500
+  accel_max_batch_samples: 600
+  accel_buffer_seconds: 60.0
+  late_batch_ms: 5000
+  camera:
+    enabled: true
+    source: 0
+    base_fps: 15.0  # the A4 vision model needs 15 fps (5 fps is enough for the rule vision model)
+    event_fps: 15.0
+    exercise_fps: 15.0
+    event_boost_s: 10.0
+    width: 640
+    height: 480
+    read_timeout_ms: 2000
+    reconnect_backoff_ms:
+    - 500
+    - 1000
+    - 2000
+    - 5000
+  pose:
+    backend: mediapipe
+    mediapipe_model: models/pose/mediapipe/pose_landmarker_lite.task
+    mediapipe_delegate: gpu
+    rtmpose_det: models/pose/rtmpose/yolox_tiny_8xb8-300e_humanart-6f3252f9.onnx
+    rtmpose_pose: models/pose/rtmpose/rtmpose-s_simcc-body7_pt-body7_420e-256x192-acd4a1ef_20230504.onnx
+    gxh_yolo: models/pose/gxh_p1/yolov8n-pose.onnx
+    gxh_pose: models/pose/gxh_p1/pose_p1.pt
+    min_keypoint_score: 0.3
+    max_people: 3
+    score_scale:
+      mediapipe: 1.0
+      rtmpose: 1.43
+      gxh: 1.0
+      synthetic: 1.0
+  zone:
+  - 0.0
+  - 0.0
+  - 1.0
+  - 1.0
+quality:
+  max_clock_uncertainty_ms: 150.0
+  clock_resync_interval_s: 60.0
+  clock_sync_max_age_s: 300.0
+  fusion_time_tolerance_ms: 1000.0
+  accel_stale_ms: 3000.0
+  camera_stale_ms: 2000.0
+  accel_min_rate_hz: 20.0
+  recovery_stable_ms: 1500.0
+  accel_gap_interp_max_ms: 120.0
+  saturation_g: 7.8
+  pose_min_valid_core: 6
+  carriage_still_minutes: 15.0
+  max_model_latency_ms: 500.0
+  max_queue_backlog: 200
+fall:
+  # Algorithm 1 (team packages, scripts/convert_team_models.py); "rule" selects the transparent baselines
+  accel_model: gxh-signal-rfxgb
+  vision_model: gxh-video-a4
+  vision_verify_s: 1.5
+  accel:
+    impact_threshold_g: 2.0
+    post_start_s: 0.5
+    post_min_s: 1.5
+    post_window_s: 2.5
+    still_std_g: 0.18
+    strong_score: 0.6
+    filter: lowpass
+    lowpass_hz: 15.0
+    window_s: 4.0
+    step_ms: 250
+  vision:
+    descent_tl: 0.9
+    descent_with_tilt_tl: 0.55
+    descent_max_s: 1.6
+    min_speed_tl_s: 0.8
+    low_hip_tl: 1.0
+    floor_hip_tl: 1.45
+    lying_torso_deg: 55.0
+    persist_min_s: 1.2
+    persist_window_s: 2.5
+    persist_fraction: 0.6
+    recovery_tl: 0.4
+    recovery_s: 0.5
+    strong_score: 0.6
+    window_s: 6.0
+    step_ms: 200
+    fps: 15.0
+  fusion:
+    backend: late_quality_gated
+    emergency_requires_two_valid_modalities: true
+    min_quality: 0.5
+    pending_min_score: 0.5
+    fusion_wait_ms: 4500.0
+    weights:
+      accel: 1.0
+      vision: 1.0
+    trained_model: null
+  merge_gap_s: 60.0
+  cooldown_s: 120.0
+exercise:
+  repetition_definition: full_cycle
+  # Algorithm 2: chair_sit_to_stand, squat, standing_leg_raise, hurdle_step ("rule" = sit-to-stand baseline)
+  phase_model: ag2-opt-tcn-b4-w48
+  sit_enter: 0.35
+  sit_exit: 0.45
+  stand_enter: 0.75
+  stand_exit: 0.65
+  velocity_tl_s: 0.15
+  max_torso_deg: 50.0
+  min_phase_s: 0.25
+  min_cycle_s: 1.2
+  max_cycle_s: 15.0
+  max_unknown_s: 0.7
+  quality_pause_s: 1.0
+  resume_stable_s: 0.6
+  default_target: 10
+escalation:
+  emergency_ack_timeout_s: 30.0
+  pending_ack_timeout_s: 120.0
+  handling_reminder_s: 120.0
+  reminder_interval_s: 120.0
+  max_reminders: 10
+  notification_ttl_s: 21600.0
+  delayed_delivery_threshold_s: 60.0
+  retry_base_s: 2.0
+  retry_max_s: 60.0
+  retry_max_attempts: 8
+notifications:
+  inapp:
+    enabled: true
+  webpush:
+    enabled: false
+    vapid_subject: mailto:admin@homeease.local
+  webhook:
+    enabled: false
+    url: null
+    timeout_s: 5.0
+  test_sink:
+    enabled: false
+  test_events_external: false
+audio:
+  enabled: false
+  auto_cancel_emergency: false
+  inquiry_response_window_s: 10.0
+  escalate_on_no_cancel: true
+  tts: browser
+  asr_temperature: null
+  asr_model: tiny
+  intent_method: rule_v2
+  vad: silero
+  languages:
+  - zh
+  - en
+  buffer_seconds: 15.0
+  gate:
+    vad_window_s: 1.5
+    vad_hop_s: 0.25
+    speech_min_s: 0.25
+    speech_end_silence_s: 0.6
+    speech_max_s: 12.0
+    onset_db: 12.0
+    hold_s: 0.3
+    min_level_dbfs: -60.0
+    floor_rise_db_per_s: 1.0
+    periodic_s: 60.0
+    gap_tolerance_ms: 200.0
+  sound_monitor:
+    enabled: false
+    model_id: sound_events
+    window_s: 2.0
+    hop_s: 0.5
+    min_conf: null
+    confirm_windows: 2
+    cooldown_s: 20.0
+    model_sha256: null
+    replay_clips: null
+  voiceprint:
+    speaker_model: voxceleb_resnet34_LM.onnx
+    threshold: null
+    min_speech_s: 1.0
+    min_asr_logprob: -1.0
+  help_listener:
+    enabled: false
+    cooldown_s: 30.0
+    min_utterance_s: 0.3
+    max_utterance_s: 6.0
+    min_asr_logprob: -1.0
+privacy:
+  persist_raw_video: false
+  persist_raw_audio: false
+  persist_voice_transcript: false
+  research_recording_dir: data/captures
+  retention_days_events: 365
+  retention_days_health: 90
+  retention_days_research: 30

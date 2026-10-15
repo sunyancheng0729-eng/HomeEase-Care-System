@@ -1,0 +1,14 @@
+{
+  "api_version": "v1",
+  "model": "gru_b2_w64",
+  "members": [
+    "gru_b2_w64.pt"
+  ],
+  "pose_model": "yolo11n-pose.pt",
+  "confidence_threshold": 0,
+  "min_dwell_s": 0.1,
+  "decoder": "conditioned_target_action_support_015",
+  "decoder_strategy": "ordered_posterior",
+  "phase_evidence_threshold": 0.25,
+  "selection_rule": "validation MAE <= best+.25, joint phase F1 >= eligible best-.02, minimum CPU p50"
+}

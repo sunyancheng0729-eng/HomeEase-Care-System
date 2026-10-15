@@ -1,0 +1,12 @@
+{
+  "model": "opt_tcn_b4_w48",
+  "selection_rule": "validation count MAE <= best+.2; joint phase F1 >= eligible best-.02; minimum CPU p50",
+  "decoder_strategy": "ordered_transition",
+  "min_dwell_s": 0.033,
+  "phase_evidence_threshold": 0.25,
+  "seed": 2026,
+  "stage": "full_validation_decoder_calibration",
+  "checkpoint_sha256": "860da96e399fda20f4e2d06b3f198574ca91c1afd5e32101dece5977e35f53c5",
+  "locked_at_unix": 1791464335.1620393,
+  "test_accessed_during_this_training": false
+}

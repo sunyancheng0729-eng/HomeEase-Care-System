@@ -1,0 +1,39 @@
+{
+  "models": {
+    "video": "A4",
+    "signal": "A2_RF+XGB_avg",
+    "exercise": "opt_tcn_b4_w48",
+    "audio": "sound_events@v2"
+  },
+  "notifications": true,
+  "signal_and_voice_workflow": {
+    "windows": 14,
+    "events": 1,
+    "intent": "HELP",
+    "level": "EMERGENCY",
+    "tag": "dual_channel"
+  },
+  "four_exercise_http_counts": {
+    "chair_sit_to_stand": 9,
+    "squat": 10,
+    "standing_leg_raise": 10,
+    "hurdle_step": 10
+  },
+  "audio": {
+    "sound_events": 1,
+    "spoken_help": true,
+    "raw_audio_stored": false
+  },
+  "continuous_microphone_pipeline": true,
+  "sensor_websocket": true,
+  "video": {
+    "frames": 80,
+    "peak": 0.9722,
+    "events": 1,
+    "playable_clip_bytes": 250378
+  },
+  "reports": true,
+  "isolated_failure_and_recovery": true,
+  "consent_revocation": true,
+  "shutdown": "all owned worker processes released"
+}

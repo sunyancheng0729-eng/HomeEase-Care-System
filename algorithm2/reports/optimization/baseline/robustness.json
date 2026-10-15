@@ -1,0 +1,226 @@
+[
+  {
+    "angle_degrees": 15,
+    "noise_source_units_std": 0,
+    "mae": 2.375,
+    "mape_pct": 24.72222222222222,
+    "details": [
+      {
+        "session": "s09_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 2
+      },
+      {
+        "session": "s10_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 9
+      },
+      {
+        "session": "s09_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s09_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 6
+      },
+      {
+        "session": "s10_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 3
+      },
+      {
+        "session": "s09_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 9
+      }
+    ]
+  },
+  {
+    "angle_degrees": 45,
+    "noise_source_units_std": 0,
+    "mae": 2.25,
+    "mape_pct": 23.47222222222222,
+    "details": [
+      {
+        "session": "s09_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 2
+      },
+      {
+        "session": "s10_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 9
+      },
+      {
+        "session": "s09_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s09_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 0
+      },
+      {
+        "session": "s09_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 9
+      }
+    ]
+  },
+  {
+    "angle_degrees": 75,
+    "noise_source_units_std": 0,
+    "mae": 1.5,
+    "mape_pct": 15.13888888888889,
+    "details": [
+      {
+        "session": "s09_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 8
+      },
+      {
+        "session": "s10_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 9
+      },
+      {
+        "session": "s09_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s09_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 0
+      },
+      {
+        "session": "s09_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 9
+      }
+    ]
+  },
+  {
+    "angle_degrees": 45,
+    "noise_source_units_std": 1,
+    "mae": 3.125,
+    "mape_pct": 32.5,
+    "details": [
+      {
+        "session": "s09_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 0
+      },
+      {
+        "session": "s10_m05_reconstructed",
+        "exercise": "chair_sit_to_stand",
+        "reference": 9,
+        "count": 9
+      },
+      {
+        "session": "s09_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s10_m01_reconstructed",
+        "exercise": "squat",
+        "reference": 10,
+        "count": 10
+      },
+      {
+        "session": "s09_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 8
+      },
+      {
+        "session": "s10_m06_reconstructed",
+        "exercise": "standing_leg_raise",
+        "reference": 10,
+        "count": 0
+      },
+      {
+        "session": "s09_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 9
+      },
+      {
+        "session": "s10_m02_reconstructed",
+        "exercise": "hurdle_step",
+        "reference": 10,
+        "count": 7
+      }
+    ]
+  }
+]

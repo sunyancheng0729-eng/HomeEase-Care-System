@@ -1,0 +1,87 @@
+{
+  "stages": {
+    "detector": {
+      "n": 24,
+      "median_ms": 28.12,
+      "p95_ms": 31.22
+    },
+    "pose": {
+      "n": 77,
+      "median_ms": 12.21,
+      "p95_ms": 14.99
+    },
+    "a4": {
+      "n": 23,
+      "median_ms": 79.99,
+      "p95_ms": 93.23
+    },
+    "total": {
+      "n": 77,
+      "median_ms": 37.88,
+      "p95_ms": 127.47
+    }
+  },
+  "status": {
+    "state": "finished",
+    "error": null,
+    "models_ready": true,
+    "load_error": null,
+    "a4_weights": "E:\\gc2\\runtime\\performance-audit\\video_bridge\\systems\\a4_weights.pkl",
+    "source": "fall-01-cam0.mp4",
+    "source_spec": {
+      "type": "file",
+      "path": "E:\\gc2\\samples\\fall-01-cam0.mp4"
+    },
+    "prob": 0.3583,
+    "peak": 0.9722,
+    "alarm": true,
+    "threshold": 0.6,
+    "frames": 80,
+    "seen": 80,
+    "detect_every": 3,
+    "prob_every": 2,
+    "fps": 11.88,
+    "elapsed": 5.3,
+    "n_falls": 0,
+    "recording": false,
+    "n_records": 2,
+    "last_record": {
+      "id": 2,
+      "time": "2026-10-15 14:18:32",
+      "epoch": 1792045112.127041,
+      "prob": 0.9657,
+      "peak": 0.9722,
+      "clip": "fall_20261015_141832.mp4",
+      "clip_url": "/api/clip/fall_20261015_141832.mp4",
+      "duration_s": 2.99,
+      "frames": 21,
+      "fps": 7.03,
+      "threshold": 0.6,
+      "source": "fall-01-cam0.mp4",
+      "alarm": true,
+      "created_at": "2026-10-15 14:18:34"
+    },
+    "gt": [],
+    "session": 1
+  },
+  "runtime": {
+    "model": "A4",
+    "pipeline": "YOLOv8n + P1 + A4",
+    "config": {
+      "threshold": 0.6,
+      "cooldown_s": 6.0,
+      "confirm": 2,
+      "clip_fps": 15.0,
+      "pre_frames": 15,
+      "post_frames": 30,
+      "detect_every": 3,
+      "prob_every": 2,
+      "show_hud": false,
+      "show_skeleton": true,
+      "clip_seconds": 3.0
+    },
+    "opencv_threads": 4,
+    "detector_backend": "onnxruntime-cuda-fp32",
+    "acceleration_error": null
+  }
+}

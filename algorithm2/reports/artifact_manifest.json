@@ -1,0 +1,97 @@
+[
+  {
+    "file": "artifacts\\ds_tcn_b3_w32.pt",
+    "bytes": 49755,
+    "sha256": "4f4463afa02c534a19697fab3d59ac065d0ab53a12d1943863c5d3e725978ca3"
+  },
+  {
+    "file": "artifacts\\ds_tcn_b4_w64.pt",
+    "bytes": 175667,
+    "sha256": "a93126459bd14c6669ea2826b45827c52b8a98800188129cd305f67c67499c49"
+  },
+  {
+    "file": "artifacts\\gru_b2_w32.pt",
+    "bytes": 67317,
+    "sha256": "5c5f62183c9981352631f445c8dae0e46bd2406ff9ec438664d18500f9920d61"
+  },
+  {
+    "file": "artifacts\\gru_b2_w64.pt",
+    "bytes": 226805,
+    "sha256": "d9aba0a193004b038dd3483a8f2d88544076a2f1b079c8bbffe0ebcd5bc30be0"
+  },
+  {
+    "file": "artifacts\\opt_gru_b2_w64.pt",
+    "bytes": 240085,
+    "sha256": "1d203a7beb101f7f27ee63b0929be24543ca06f83366d6abac060f8bb90ff825"
+  },
+  {
+    "file": "artifacts\\opt_tcn_b4_w48.pt",
+    "bytes": 262613,
+    "sha256": "860da96e399fda20f4e2d06b3f198574ca91c1afd5e32101dece5977e35f53c5"
+  },
+  {
+    "file": "artifacts\\opt_tcn_b5_w48.pt",
+    "bytes": 320429,
+    "sha256": "476c0c1db85f51c56319f7135de32e02cf47f443444704c3e39198cb58b2a776"
+  },
+  {
+    "file": "artifacts\\selected.json",
+    "bytes": 520,
+    "sha256": "776196b90cedd2b57a4f122be8b6a43d8693d8ecd7bbb5babd9c5105b6411580"
+  },
+  {
+    "file": "artifacts\\selected_pose.json",
+    "bytes": 147,
+    "sha256": "b5f66f229d9855c5f6f2bdc718fb17d6d96cc04b5e3015e1c8fe937a81de2fd2"
+  },
+  {
+    "file": "artifacts\\tcn_b2_w32.pt",
+    "bytes": 66357,
+    "sha256": "272be0f31d95a86646e84fa3aa8497f3e6a1ad24481e57749085e1849a8bcfcf"
+  },
+  {
+    "file": "artifacts\\tcn_b3_w32.pt",
+    "bytes": 92277,
+    "sha256": "dbde095f8b3577ce87558103d5c040cd398a260b349276bb115dc731ceaedf4a"
+  },
+  {
+    "file": "artifacts\\tcn_b3_w64.pt",
+    "bytes": 324725,
+    "sha256": "3788d75e378c080b70ab30304951d8d08f180635e247e84b6db5d93ac4f20717"
+  },
+  {
+    "file": "artifacts\\tcn_b4_w32.pt",
+    "bytes": 118261,
+    "sha256": "14eddacdf4a7f45da7c682ab0520bff29173e26c874bd273d253b4cd1c3d05f3"
+  },
+  {
+    "file": "artifacts\\tcn_coords.pt",
+    "bytes": 86453,
+    "sha256": "34beed67d8739fe4f320b5d20deff17d31d9d3fcad38fae5650972d41c45d3a0"
+  },
+  {
+    "file": "artifacts\\tcn_kinematics.pt",
+    "bytes": 85389,
+    "sha256": "bacf472728b7b59ccbe20d871ccd19e2447a6fd2fb9de0745c9111e5a77542c4"
+  },
+  {
+    "file": "artifacts\\transformer_b2_w32.pt",
+    "bytes": 89925,
+    "sha256": "6b32da1e71da2bc196e17d9a0b6b337cb9efa4482b9a092b057e9174991c5407"
+  },
+  {
+    "file": "artifacts\\yolo11m-pose.pt",
+    "bytes": 42459307,
+    "sha256": "29b17eaf3a3117cbea906090dbedf9159f7c6a49db58ec8b99ed2dfde1cf6eb2"
+  },
+  {
+    "file": "artifacts\\yolo11n-pose.pt",
+    "bytes": 6255593,
+    "sha256": "869e83fcdffdc7371fa4e34cd8e51c838cc729571d1635e5141e3075e9319dc0"
+  },
+  {
+    "file": "artifacts\\yolo11s-pose.pt",
+    "bytes": 20373161,
+    "sha256": "1060bda4a27012060eca246f9b2adeea22eabb045a1e58f8d229be29b7ebc2ba"
+  }
+]

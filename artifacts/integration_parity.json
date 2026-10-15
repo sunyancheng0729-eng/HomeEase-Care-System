@@ -1,0 +1,71 @@
+{
+  "signal": {
+    "events": 1,
+    "windows": 14,
+    "max_probability_error": 0.0,
+    "stream_events_equal": true,
+    "stream_alarms_equal": true,
+    "stream_windows": 14
+  },
+  "exercise": {
+    "chair_sit_to_stand": {
+      "count": 9,
+      "frames": 790,
+      "cycles_equal": true,
+      "phase_probabilities_equal": true
+    },
+    "squat": {
+      "count": 10,
+      "frames": 887,
+      "cycles_equal": true,
+      "phase_probabilities_equal": true
+    },
+    "standing_leg_raise": {
+      "count": 10,
+      "frames": 572,
+      "cycles_equal": true,
+      "phase_probabilities_equal": true
+    },
+    "hurdle_step": {
+      "count": 10,
+      "frames": 644,
+      "cycles_equal": true,
+      "phase_probabilities_equal": true
+    },
+    "shared_camera_pose": {
+      "person_equal": true,
+      "max_keypoint_error": 0.0
+    }
+  },
+  "audio": {
+    "sound_events_equal": true,
+    "joint_monitor_equal": true,
+    "help_verdicts_equal": true,
+    "help": true,
+    "reply_intents": {
+      "我需要帮助": "HELP",
+      "I'm fine": "REASSURANCE",
+      "Don't worry, she is fine.": "REASSURANCE"
+    },
+    "asr_logprob_max_error": 0.0,
+    "asr_logprob_tolerance": 0.05,
+    "asr_temperature": "0 for parity test only; product preserves original fallback default"
+  },
+  "video": {
+    "observed_frames_compared": 35,
+    "max_probability_error": 0.0,
+    "detector_and_pose_equal": true,
+    "engine_source_identical": true,
+    "probability": [
+      0.00899821799248457
+    ],
+    "detector_backend": "onnxruntime-cuda-fp32",
+    "detector_tolerance": 1e-06,
+    "full_pipeline_frames": 80,
+    "full_pipeline_max_probability_error": 0.0,
+    "full_pipeline_trigger_frames_equal": [
+      58
+    ],
+    "clock": "same 15 Hz timeline on both original engines; no recording side effects"
+  }
+}

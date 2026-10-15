@@ -1,0 +1,46 @@
+{
+ "schema": "f3-scenes/1",
+ "name": "quiet_home",
+ "seed": 42,
+ "description": "Washing-machine hum with one everyday sound. Nothing should be reported as HELP, IMPACT or ABNORMAL.",
+ "sample_rate": 16000,
+ "duration_s": 20.0,
+ "background_dbfs": -48.0,
+ "scene_gain_db": 0.0,
+ "truth": [
+  {
+   "kind": "daily",
+   "t0_s": 8.808,
+   "t1_s": 13.808,
+   "expect": "DAILY"
+  }
+ ],
+ "inquiry": null,
+ "sources": [
+  {
+   "role": "background",
+   "source": "esc50",
+   "file": "5-238021-A-35.wav",
+   "subtype": "washing_machine",
+   "fold": 5,
+   "group": "esc50:238021",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "5b3fb9d4fa999f75e8e7ca37e96304322beb04a73949a64012eabba0834f6fbf"
+  },
+  {
+   "role": "daily",
+   "source": "esc50",
+   "file": "5-223099-A-32.wav",
+   "subtype": "keyboard_typing",
+   "fold": 5,
+   "group": "esc50:223099",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "d4189f4b4acc489e7bb8314685ebff687ccf8cdf7925d73a3aab1f30c40f44c4"
+  }
+ ],
+ "note": "synthetic scene built from clean public clips and TTS; a plumbing demo, not household or older-adult audio; sources come from the held-out fold of the sound model (held_out=true)",
+ "wav_sha256": "6bb6fd9e27a65d6b1570fad24d9399d91b398bfc11508e004b299c37de8056d3",
+ "wav_bytes": 640044
+}

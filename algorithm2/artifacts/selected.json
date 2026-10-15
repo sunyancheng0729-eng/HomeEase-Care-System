@@ -1,0 +1,15 @@
+{
+  "api_version": "v1",
+  "model": "opt_tcn_b4_w48",
+  "members": [
+    "opt_tcn_b4_w48.pt"
+  ],
+  "pose_model": "yolo11n-pose.pt",
+  "confidence_threshold": 0,
+  "min_dwell_s": 0.033,
+  "decoder": "conditioned_target_action_support_015",
+  "decoder_strategy": "ordered_transition",
+  "phase_evidence_threshold": 0.25,
+  "selection_rule": "validation count MAE <= best+.2; joint phase F1 >= eligible best-.02; minimum CPU p50",
+  "optimization_selection_lock": "reports/optimization/selection_lock.json"
+}

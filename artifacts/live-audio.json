@@ -1,0 +1,11 @@
+{
+  "sample": "scene_fall_help_call.wav",
+  "seconds": 29.0,
+  "chunks": 58,
+  "discontinuities": 0,
+  "calls": 1,
+  "live_emergency_events": 1,
+  "sound_events": 1,
+  "max_request_ms": 341.5,
+  "raw_audio_stored": false
+}

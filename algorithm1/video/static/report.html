@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>跌倒检测报告</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">🛡</span>跌倒检测报告
+    <span class="pipe">|</span>
+    <span class="sub">跌倒时间（系统时间）· 3 秒录像 · 报警标记</span>
+  </div>
+  <nav class="nav">
+    <a href="/">监控台</a>
+    <a href="/report" class="active">跌倒报告</a>
+  </nav>
+  <div class="conn"><span id="connDot" class="dot"></span><span id="connText">连接中…</span></div>
+</header>
+
+<div class="report-wrap">
+  <div class="report-head">
+    <div>
+      <h1>跌倒检测记录报告</h1>
+      <div class="meta" id="genTime">—</div>
+    </div>
+    <div class="right-actions">
+      <button class="ghost" id="btnRefresh">刷新</button>
+      <button class="ghost" id="btnExport">导出 HTML 报告</button>
+      <button class="danger" id="btnClear" style="flex:0 0 auto">清空记录</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div><label>跌倒次数</label><b id="sCount">0</b></div>
+    <div><label>首次记录</label><b id="sFirst" style="font-size:14px">—</b></div>
+    <div><label>最近记录</label><b id="sLast" style="font-size:14px">—</b></div>
+    <div><label>最高峰值概率</label><b id="sPeak">—</b></div>
+  </div>
+
+  <div id="tableBox">
+    <div class="empty-state">正在加载…</div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="/static/report.js"></script>
+</body>
+</html>

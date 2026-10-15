@@ -1,0 +1,42 @@
+{
+  "api_version": "v1",
+  "session_id": "local",
+  "status": "ended",
+  "exercise": "chair_sit_to_stand",
+  "recognized_exercise": "other",
+  "exercise_probabilities": {
+    "chair_sit_to_stand": 0.009119871072471142,
+    "squat": 0.005110736005008221,
+    "standing_leg_raise": 0.006969129666686058,
+    "hurdle_step": 0.011204279959201813,
+    "other": 0.9675960540771484
+  },
+  "phase": "other",
+  "phase_confidence": 0.9675960540771484,
+  "phase_probabilities": {
+    "sitting": 0.0,
+    "rising": 0.0,
+    "standing": 0.0,
+    "lowering": 0.0,
+    "other": 1.0
+  },
+  "count": 0,
+  "target_reps": 10,
+  "progress": 0.0,
+  "target_completed": false,
+  "elapsed_s": 1.9666666666666666,
+  "active_duration_s": 1.9666666666666646,
+  "valid_duration_s": 1.9666666666666646,
+  "quality": "good",
+  "last_timestamp_ms": 1966.6666666666665,
+  "interruptions": [],
+  "cycles": [],
+  "model_id": "opt_tcn_b4_w48",
+  "model_validation": "public_mocap_weak_phase_reconstructed_replay",
+  "test_scope": "real_pose_cnn_on_repeated_static_COCO_image_not_exercise_accuracy",
+  "image_source": {
+    "id": 785,
+    "url": "https://s3.amazonaws.com/images.cocodataset.org/val2017/000000000785.jpg",
+    "sha256": "83981537a7baeafbeb9c8cb67b3484dc26433f574b3685d021fa537e277e4726"
+  }
+}

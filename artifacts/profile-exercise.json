@@ -1,0 +1,27 @@
+{
+  "cpu": {
+    "pose": {
+      "n": 27,
+      "median_ms": 38.89,
+      "p95_ms": 79.31
+    },
+    "update": {
+      "n": 27,
+      "median_ms": 3.54,
+      "p95_ms": 8.57
+    }
+  },
+  "cuda": {
+    "pose": {
+      "n": 27,
+      "median_ms": 14.4,
+      "p95_ms": 21.65
+    },
+    "update": {
+      "n": 27,
+      "median_ms": 2.93,
+      "p95_ms": 4.15
+    }
+  },
+  "cpu_cuda_max_keypoint_delta": 0.0174560546875
+}

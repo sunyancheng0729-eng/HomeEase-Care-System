@@ -1,0 +1,2 @@
+Lucide icons: https://github.com/lucide-icons/lucide (ISC License).
+Version 0.468.0, unmodified UMD distribution, stored locally for offline use.

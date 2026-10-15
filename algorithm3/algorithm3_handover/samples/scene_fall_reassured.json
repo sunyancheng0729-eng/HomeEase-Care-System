@@ -1,0 +1,75 @@
+{
+ "schema": "f3-scenes/1",
+ "name": "fall_reassured",
+ "seed": 42,
+ "description": "A thud; the person answers 'I'm fine' when asked (suspected fall at 4 s).",
+ "sample_rate": 16000,
+ "duration_s": 24.0,
+ "background_dbfs": -48.0,
+ "scene_gain_db": 0.0,
+ "truth": [
+  {
+   "kind": "thud",
+   "t0_s": 3.664,
+   "t1_s": 4.056,
+   "expect": "IMPACT"
+  },
+  {
+   "kind": "reply",
+   "t0_s": 9.304,
+   "t1_s": 11.789,
+   "expect": null,
+   "voice": "Zira",
+   "text": "I'm fine, don't worry.",
+   "speaker_role": "self"
+  }
+ ],
+ "inquiry": {
+  "fall_at_s": 4.0,
+  "prompt_s": 4.0,
+  "inquiry_start_s": 8.0,
+  "window_s": 10.0,
+  "level": "emergency",
+  "reply_voice": "Zira",
+  "reply_text": "I'm fine, don't worry.",
+  "reply_role": "self",
+  "reply_t0_s": 9.304,
+  "note": "the fall event is scripted: audio never creates or cancels an event; the reply is read from the scene timeline like a microphone window"
+ },
+ "sources": [
+  {
+   "role": "background",
+   "source": "esc50",
+   "file": "5-181977-A-35.wav",
+   "subtype": "washing_machine",
+   "fold": 5,
+   "group": "esc50:181977",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "f04401db719f20052c3c7497a5893f644473f08a05f4820200b36076079f7951"
+  },
+  {
+   "role": "thud",
+   "source": "fsd50k",
+   "file": "383750.wav",
+   "subtype": "Thump_and_thud",
+   "fold": 5,
+   "group": "fsd50k:Jay_You",
+   "held_out": true,
+   "license": "http://creativecommons.org/licenses/by/3.0/",
+   "sha256": "299225ba31df40467799a911d22ddc717e3d8a5ae4d1a5721a39ff27fa851466"
+  },
+  {
+   "role": "reply",
+   "source": "tts",
+   "voice": "Zira",
+   "text": "I'm fine, don't worry.",
+   "speaker_role": "self",
+   "language": "en",
+   "license": "synthesised on the fly by the operating-system voice"
+  }
+ ],
+ "note": "synthetic scene built from clean public clips and TTS; a plumbing demo, not household or older-adult audio; sources come from the held-out fold of the sound model (held_out=true)",
+ "wav_sha256": "0761158f50d4ade409411ec234412c8755be187efb8c3f478bb9c684bb3df3f7",
+ "wav_bytes": 768044
+}

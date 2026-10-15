@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>算法 3 演示:语音交互与声音监测</title>
+<style>
+  :root { --ink:#1f2937; --mute:#6b7280; --line:#d9dee5; --bg:#f5f6f8; --card:#fff; --accent:#1f4e8c; --ok:#1a7f4b; --warn:#b45309; --bad:#b42318; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.55 "Microsoft YaHei","Segoe UI",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+  header { background:var(--accent); color:#fff; padding:16px 24px; }
+  header h1 { margin:0; font-size:20px; font-weight:600; }
+  header p { margin:4px 0 0; opacity:.9; }
+  main { max-width:1080px; margin:0 auto; padding:16px; display:grid; gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 18px; }
+  .card h2 { margin:0 0 4px; font-size:16px; }
+  .card .sub { margin:0 0 12px; color:var(--mute); }
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0; }
+  select, input[type=text], input[type=number], textarea { font:inherit; padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:#fff; max-width:100%; }
+  textarea { width:100%; min-height:44px; }
+  button { font:inherit; padding:6px 14px; border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:6px; cursor:pointer; }
+  button.ghost { background:#fff; color:var(--accent); }
+  button:disabled { opacity:.5; cursor:default; }
+  audio { height:32px; max-width:100%; }
+  table { border-collapse:collapse; width:100%; margin:8px 0; }
+  th, td { border:1px solid var(--line); padding:5px 8px; text-align:left; vertical-align:top; }
+  th { background:#f1f3f6; font-weight:600; }
+  .note { color:var(--mute); font-size:13px; }
+  .tag { display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600; border:1px solid currentColor; }
+  .HELP, .bad { color:var(--bad); } .REASSURANCE, .ok { color:var(--ok); } .OTHER, .UNCERTAIN, .warn { color:var(--warn); }
+  .result { margin-top:8px; }
+  .err { color:var(--bad); }
+  .pill { background:#eef2f7; border-radius:12px; padding:2px 10px; margin-right:6px; display:inline-block; }
+  #status { margin-top:8px; }
+  fieldset { border:1px solid var(--line); border-radius:6px; margin:8px 0; }
+  legend { color:var(--mute); padding:0 6px; }
+  label { margin-right:12px; white-space:nowrap; }
+</style>
+</head>
+<body>
+<header>
+  <h1>算法 3 演示:语音交互与声音监测</h1>
+  <p>全部在本机运行。音频只在内存中处理,不保存、不上传;这个页面只是把算法的几个调用点出来给你们看。</p>
+  <div id="status">正在连接…</div>
+</header>
+<main>
+
+<section class="card" id="c1">
+  <h2>1. 声音事件监测</h2>
+  <p class="sub">一段录音经过前端(两个门限)、YAMNet 嵌入和逻辑回归,得到 HELP / IMPACT / ABNORMAL / DAILY / UNKNOWN 标签。标签只是提示,不会报警或取消。</p>
+  <div class="row">
+    <select id="c1sample"></select>
+    <audio id="c1audio" controls></audio>
+  </div>
+  <div class="row">
+    <button id="c1run">分析这段录音</button>
+    <input type="file" id="c1file" accept="audio/*">
+    <button class="ghost" id="c1rec">录音 8 秒</button>
+  </div>
+  <p class="note" id="c1note"></p>
+  <div class="result" id="c1out"></div>
+</section>
+
+<section class="card" id="c2">
+  <h2>2. 回复识别("请问你怎么啦")</h2>
+  <p class="sub">语音识别(Whisper tiny)加回复规则 v2,得到 HELP / REASSURANCE / OTHER / UNCERTAIN。没有登记声纹时,"我没事"只凭文字和识别置信度判断。</p>
+  <div class="row">
+    <select id="c2sample"></select>
+    <audio id="c2audio" controls></audio>
+  </div>
+  <div class="row">
+    <button id="c2run">识别这段回复</button>
+    <input type="file" id="c2file" accept="audio/*">
+    <button class="ghost" id="c2rec">录音 8 秒</button>
+  </div>
+  <div class="row"><textarea id="c2text" placeholder="或者直接输入一句话(跳过语音识别),例如:I'm fine / 救命 / 我没事"></textarea></div>
+  <div class="row"><button class="ghost" id="c2textrun">识别这句话</button></div>
+  <p class="note" id="c2note"></p>
+  <div class="result" id="c2out"></div>
+</section>
+
+<section class="card" id="c3">
+  <h2>3. 喊救命检测</h2>
+  <p class="sub">模拟持续监听:语音门限切出说话片段,只有 0.3 到 6 秒、识别置信度够、是一句明确的求救话才报警,30 秒内不重复。</p>
+  <div class="row">
+    <select id="c3sample"></select>
+    <audio id="c3audio" controls></audio>
+  </div>
+  <div class="row">
+    <button id="c3run">检测</button>
+    <input type="file" id="c3file" accept="audio/*">
+    <button class="ghost" id="c3rec">录音 8 秒</button>
+  </div>
+  <p class="note" id="c3note"></p>
+  <div class="result" id="c3out"></div>
+</section>
+
+<section class="card" id="c4">
+  <h2>4. 报警决策与通道标签</h2>
+  <p class="sub">传感器候选加上语音询问的结果,决定事件是否升级,并按固定 10 秒窗口给出 single / dual / triple 通道标签。这里是纯规则,不需要模型。</p>
+  <fieldset>
+    <legend>传感器候选(第一个标记的时间作为 0 秒)</legend>
+    <label><input type="checkbox" id="m_accel"> 加速度 at <input type="number" id="t_accel" value="0" step="0.5" style="width:70px"> 秒</label>
+    <label><input type="checkbox" id="m_vision" checked> 视觉 at <input type="number" id="t_vision" value="0" step="0.5" style="width:70px"> 秒</label>
+    <label>询问开始于 <input type="number" id="t_ask" value="1" step="0.5" style="width:70px"> 秒</label>
+  </fieldset>
+  <div class="row">
+    <label>事件当前级别
+      <select id="level"><option value="PENDING">PENDING(待核实)</option><option value="EMERGENCY">EMERGENCY(紧急)</option></select></label>
+    <label>回复结果
+      <select id="reply">
+        <option value="silence">没有回答(NO_RESPONSE)</option>
+        <option value="fine">可信的"我没事"</option>
+        <option value="fine_untrusted">不可信的"我没事"(声纹不匹配)</option>
+        <option value="fine_lowconf">"我没事"但识别置信度太低</option>
+        <option value="help">说了求救的话</option>
+        <option value="other">无关的话</option>
+        <option value="not_delivered">问题没有传达(没有页面、没有喇叭)</option>
+        <option value="unavailable">麦克风或识别器故障</option>
+        <option value="last">使用卡片 2 最近一次的识别结果</option>
+      </select></label>
+  </div>
+  <div class="row">
+    <label><input type="checkbox" id="button_ok"> 老人在询问后按了"我没事"按钮</label>
+    <label><input type="checkbox" id="escalate" checked> 没有取消就升级(audio.escalate_on_no_cancel)</label>
+    <label><input type="checkbox" id="resolved"> 事件已被照护者关闭</label>
+    <button id="c4run">计算</button>
+  </div>
+  <div class="result" id="c4out"></div>
+</section>
+
+</main>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+let INFO = null, LAST_REPLY = null;
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function tag(v) { return v ? `<span class="tag ${esc(v)}">${esc(v)}</span>` : "<span class='note'>无</span>"; }
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.detail || r.statusText);
+  return j;
+}
+function form(obj) { const f = new FormData(); for (const [k, v] of Object.entries(obj)) if (v !== null && v !== undefined) f.append(k, v); return f; }
+
+function fillSamples(sel, items) {
+  sel.innerHTML = items.map(i => `<option value="${esc(i.id)}" data-file="${esc(i.file)}" data-note="${esc(i.note || "")}" data-said="${esc(i.said || "")}">${esc(i.title)}</option>`).join("");
+}
+function bindSample(prefix) {
+  const sel = $(prefix + "sample"), audio = $(prefix + "audio"), note = $(prefix + "note");
+  const upd = () => {
+    const o = sel.selectedOptions[0]; if (!o) return;
+    audio.src = "/samples/" + o.dataset.file;
+    note.textContent = (o.dataset.said ? "说的话:" + o.dataset.said + "。" : "") + o.dataset.note;
+  };
+  sel.addEventListener("change", upd); upd();
+}
+
+async function record(seconds) {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const rec = new MediaRecorder(stream), chunks = [];
+  rec.ondataavailable = e => chunks.push(e.data);
+  const done = new Promise(res => rec.onstop = res);
+  rec.start();
+  await new Promise(r => setTimeout(r, seconds * 1000));
+  rec.stop(); await done;
+  stream.getTracks().forEach(t => t.stop());
+  return new Blob(chunks, { type: rec.mimeType || "audio/webm" });
+}
+
+function busy(btn, on) { btn.disabled = on; }
+
+function renderSounds(r) {
+  const ev = r.events.length ? `<table><tr><th>类别</th><th>开始(秒)</th><th>结束(秒)</th><th>置信度</th><th>电平 dBFS</th><th>窗口</th></tr>` +
+    r.events.map(e => `<tr><td>${tag(e.category)}</td><td>${e.start_s}</td><td>${e.end_s}</td><td>${e.confidence}</td><td>${e.rms_db} / ${e.peak_db}</td><td>${e.windows}</td></tr>`).join("") + "</table>"
+    : "<p>没有声音事件。</p>";
+  const sp = r.speech.length ? "说话片段:" + r.speech.map(s => `<span class="pill">${s.start_s}–${s.end_s} 秒</span>`).join("") : "没有切出说话片段。";
+  return `<p>录音 ${r.duration_s} 秒;语音门限:${esc(r.vad)}${r.vad_note ? "(" + esc(r.vad_note) + ")" : ""};状态:${esc(r.status)}</p>${ev}<p>${sp}</p>`;
+}
+function renderReply(r) {
+  const ok = r.trusted_reassurance ? "是,可以停止升级" : "否";
+  return `<table>
+    <tr><th>状态</th><td>${esc(r.status)}</td><th>意图</th><td>${tag(r.intent)} <span class="note">${esc(r.intent_reason || "")}</span></td></tr>
+    <tr><th>识别文字</th><td>${esc(r.transcript || "")}</td><th>线索</th><td>${(r.cues || []).map(c => `<span class="pill">${esc(c)}</span>`).join("")}</td></tr>
+    <tr><th>识别置信度(avg_logprob)</th><td>${r.asr_avg_logprob == null ? "—" : Number(r.asr_avg_logprob).toFixed(2)}</td><th>可信的"我没事"</th><td>${ok}</td></tr>
+    <tr><th>声纹证据</th><td colspan="3">cancel_eligible = ${r.cancel_eligible}(${esc((r.cancel_reasons || []).join(", ") || "无")});只是证据,不会关闭或降级事件</td></tr>
+  </table>`;
+}
+function renderHelp(r) {
+  if (!r.segments.length) return `<p>没有切出说话片段,所以没有判断。语音门限:${esc(r.vad)}</p>`;
+  return `<table><tr><th>开始(秒)</th><th>时长(秒)</th><th>结果</th><th>说明</th></tr>` + r.segments.map(s => {
+    const alarm = s.verdict === "help";
+    return `<tr><td>${s.start_s}</td><td>${s.duration_s}</td><td class="${alarm ? "bad" : ""}"><b>${alarm ? "报警:喊救命" : "忽略"}</b> <span class="note">${esc(s.verdict)}</span></td>
+      <td>${alarm ? "线索:" + (s.cues || []).map(esc).join(", ") + ";置信度 " + s.asr_avg_logprob : explain(s.verdict)}</td></tr>`;
+  }).join("") + `</table><p class="note">语音门限:${esc(r.vad)}${r.vad_note ? "(" + esc(r.vad_note) + ")" : ""}</p>`;
+}
+function explain(v) {
+  return ({ too_short: "太短(不到 0.3 秒),当作噪声", too_long: "太长(超过 6 秒),当作谈话或广播", cooldown: "30 秒冷却时间内,不重复报警", not_help: "意图不是求救",
+    not_a_call: "提到了求助的词,但不是在求救(感谢、提议、只是提到救护车)", low_confidence: "识别置信度不够", no_text: "没有识别出文字", too_many_words: "话太多,不像一句求救",
+    no_consent: "没有同意", disabled: "功能未开启", asr_unavailable: "识别器不可用", asr_error: "识别出错" })[v] || "";
+}
+function renderOutcome(r) {
+  const o = r.outcome;
+  const stateName = { cancelled: "有效取消:只停止升级,事件保持待核实,等照护者关闭", no_cancel: "没有取消", not_run: "没有进行检查:不记标记、不升级,界面显示为降级", audio_unavailable: "麦克风或识别器故障:不记标记、不升级,界面显示为降级" }[o.state] || o.state;
+  const final = r.final_level;
+  return `<table>
+    <tr><th>询问结果</th><td>${esc(stateName)}${o.by ? "(" + (o.by === "voice" ? "语音" : "按钮") + ")" : ""}</td></tr>
+    <tr><th>音频标记</th><td>${o.marker ? esc(o.marker) : "无"}</td></tr>
+    <tr><th>升级到 EMERGENCY</th><td class="${o.escalate ? "bad" : ""}">${o.escalate ? "是" : "否"}${o.notify ? ";并通知照护者(已是紧急事件的求救)" : ""}${o.call ? ";关闭后的求救,单独成为一个报警" : ""}</td></tr>
+    <tr><th>事件级别</th><td>${esc(r.level)} → <b>${esc(final)}</b></td></tr>
+    <tr><th>通道标签</th><td>${tag(r.tag)} <span class="note">计入的通道:${(r.channels || []).join("、") || "无"}(窗口 ${r.window_s} 秒)</span></td></tr>
+    <tr><th>标记</th><td>${r.markers.map(m => `<span class="pill">${esc(m.channel)} 第 ${((Date.parse(m.at) - Date.parse(r.markers[0].at)) / 1000).toFixed(1)} 秒 ${m.counted ? "计入" : "未计入"}</span>`).join("") || "无"}</td></tr>
+  </table>`;
+}
+
+async function runSample(prefix, endpoint, render, extra) {
+  const out = $(prefix + "out"), btn = $(prefix + "run");
+  const file = $(prefix + "file").files[0];
+  const sample = $(prefix + "sample").value;
+  busy(btn, true); out.innerHTML = "<p class='note'>处理中…第一次要加载模型,需要几秒。</p>";
+  try {
+    const r = await api(endpoint, { method: "POST", body: form({ sample: file ? null : sample, file: file || null, ...(extra || {}) }) });
+    out.innerHTML = render(r); return r;
+  } catch (e) { out.innerHTML = `<p class="err">出错:${esc(e.message)}</p>`; }
+  finally { busy(btn, false); }
+}
+async function runRecord(prefix, endpoint, render) {
+  const out = $(prefix + "out"), btn = $(prefix + "rec");
+  busy(btn, true);
+  try {
+    out.innerHTML = "<p class='note'>正在录音 8 秒,请说话…</p>";
+    const blob = await record(8);
+    out.innerHTML = "<p class='note'>处理中…</p>";
+    const r = await api(endpoint, { method: "POST", body: form({ file: new File([blob], "recording.webm") }) });
+    out.innerHTML = render(r); return r;
+  } catch (e) { out.innerHTML = `<p class="err">出错:${esc(e.message)}(浏览器需要允许使用麦克风)</p>`; }
+  finally { busy(btn, false); }
+}
+
+$("c1run").onclick = () => runSample("c1", "/api/sounds", renderSounds);
+$("c1rec").onclick = () => runRecord("c1", "/api/sounds", renderSounds);
+$("c2run").onclick = async () => { const r = await runSample("c2", "/api/reply", renderReply); if (r) LAST_REPLY = r; };
+$("c2rec").onclick = async () => { const r = await runRecord("c2", "/api/reply", renderReply); if (r) LAST_REPLY = r; };
+$("c2textrun").onclick = async () => {
+  const out = $("c2out");
+  try { const r = await api("/api/reply", { method: "POST", body: form({ text: $("c2text").value }) }); LAST_REPLY = r; out.innerHTML = renderReply(r); }
+  catch (e) { out.innerHTML = `<p class="err">出错:${esc(e.message)}</p>`; }
+};
+$("c3run").onclick = () => runSample("c3", "/api/help", renderHelp);
+$("c3rec").onclick = () => runRecord("c3", "/api/help", renderHelp);
+
+const REPLIES = {
+  silence: { status: "NO_RESPONSE", intent: null, prompt_played: true },
+  fine: { status: "RESPONDED", intent: "REASSURANCE", asr_avg_logprob: -0.3, prompt_played: true },
+  fine_untrusted: { status: "RESPONDED", intent: "REASSURANCE", asr_avg_logprob: -0.3, speaker_verified: false, voiceprint_enrolled: true, prompt_played: true },
+  fine_lowconf: { status: "RESPONDED", intent: "REASSURANCE", asr_avg_logprob: -1.6, prompt_played: true },
+  help: { status: "RESPONDED", intent: "HELP", asr_avg_logprob: -0.4, prompt_played: true },
+  other: { status: "RESPONDED", intent: "OTHER", asr_avg_logprob: -0.5, prompt_played: true },
+  not_delivered: { status: "NO_RESPONSE", intent: null, prompt_played: false },
+  unavailable: { status: "audio_unavailable", intent: null, prompt_played: true },
+};
+$("c4run").onclick = async () => {
+  const markers = [];
+  if ($("m_accel").checked) markers.push({ channel: "accel", at_s: Number($("t_accel").value), kind: "candidate" });
+  if ($("m_vision").checked) markers.push({ channel: "vision", at_s: Number($("t_vision").value), kind: "candidate" });
+  let reply = REPLIES[$("reply").value];
+  if ($("reply").value === "last") {
+    if (!LAST_REPLY) { $("c4out").innerHTML = "<p class='err'>卡片 2 还没有识别结果。</p>"; return; }
+    reply = { status: LAST_REPLY.status, intent: LAST_REPLY.intent, asr_avg_logprob: LAST_REPLY.asr_avg_logprob, speaker_verified: LAST_REPLY.speaker_verified,
+              voiceprint_enrolled: LAST_REPLY.voiceprint_enrolled, prompt_played: true };
+  }
+  const body = { markers, reply, question_at_s: Number($("t_ask").value), level: $("level").value, button_ok: $("button_ok").checked,
+                 escalate_on_no_cancel: $("escalate").checked, resolved: $("resolved").checked };
+  try {
+    const r = await api("/api/alarm", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    $("c4out").innerHTML = renderOutcome(r);
+  } catch (e) { $("c4out").innerHTML = `<p class="err">出错:${esc(e.message)}</p>`; }
+};
+
+(async function init() {
+  try {
+    INFO = await api("/api/info");
+    fillSamples($("c1sample"), INFO.samples.scenes);
+    fillSamples($("c2sample"), INFO.samples.replies);
+    fillSamples($("c3sample"), INFO.samples.replies.concat(INFO.samples.scenes.filter(s => s.id.includes("fall_"))));
+    ["c1", "c2", "c3"].forEach(bindSample);
+    $("status").textContent = "正在加载模型…";
+    const w = await api("/api/warmup", { method: "POST" });
+    const bits = [`语音门限:${w.vad}${w.vad_note ? "(" + w.vad_note + ")" : ""}`, `声音模型:${w.sound_model || "未加载:" + w.sound_model_error}`, `识别器:${w.asr_model || "未加载:" + w.asr_error}`];
+    $("status").textContent = bits.join(" | ");
+  } catch (e) { $("status").textContent = "连接失败:" + e.message; }
+})();
+</script>
+</body>
+</html>

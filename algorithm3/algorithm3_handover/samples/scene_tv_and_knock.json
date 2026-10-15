@@ -1,0 +1,63 @@
+{
+ "schema": "f3-scenes/1",
+ "name": "tv_and_knock",
+ "seed": 42,
+ "description": "A TV speaker talks for ten seconds (speech, not a person answering), then someone knocks.",
+ "sample_rate": 16000,
+ "duration_s": 24.0,
+ "background_dbfs": -48.0,
+ "scene_gain_db": 0.0,
+ "truth": [
+  {
+   "kind": "tv_speech",
+   "t0_s": 3.106,
+   "t1_s": 5.616,
+   "expect": null
+  },
+  {
+   "kind": "knock",
+   "t0_s": 18.031,
+   "t1_s": 23.031,
+   "expect": "IMPACT"
+  }
+ ],
+ "inquiry": null,
+ "sources": [
+  {
+   "role": "background",
+   "source": "esc50",
+   "file": "5-141683-A-35.wav",
+   "subtype": "washing_machine",
+   "fold": 5,
+   "group": "esc50:141683",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "c8ac3bafa369ff4bcfef515f00060c963f4c19d9275ada75edbc8cdb9c1ad591"
+  },
+  {
+   "role": "tv_speech",
+   "source": "librispeech",
+   "file": "3576-138058-0003.flac",
+   "subtype": "read_speech",
+   "fold": 5,
+   "group": "librispeech:3576",
+   "held_out": true,
+   "license": "CC BY 4.0",
+   "sha256": "e0ae498d17b39bdec6c6eadf7555df715d0d228a47f54653b842c014d48e0ffc"
+  },
+  {
+   "role": "knock",
+   "source": "esc50",
+   "file": "5-256512-A-30.wav",
+   "subtype": "door_wood_knock",
+   "fold": 5,
+   "group": "esc50:256512",
+   "held_out": true,
+   "license": "CC BY-NC 3.0",
+   "sha256": "df74f2bee45f36c528a27035f0a8b50c71b833a6e7c8c39f42a0f4448f968dbf"
+  }
+ ],
+ "note": "synthetic scene built from clean public clips and TTS; a plumbing demo, not household or older-adult audio; sources come from the held-out fold of the sound model (held_out=true)",
+ "wav_sha256": "3967b14f2932e336c75a0c1cdff4c40ba423355e04c6e9e205d8b52a4771aa46",
+ "wav_bytes": 768044
+}

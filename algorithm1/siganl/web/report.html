@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>跌倒检测报告</title>
+<link rel="stylesheet" href="/web/style.css">
+<style>
+  main{max-width:1020px}
+  .hero{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .kv .k{color:var(--dim);font-size:12px}
+  .kv .v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+  .kv .v small{font-size:12px;color:var(--dim);font-weight:400}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin-top:10px}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+  .back{color:var(--dim);font-size:12.5px;text-decoration:none}
+  .back:hover{color:var(--txt)}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <div class="logo"><span class="dot"></span>跌倒检测报告</div>
+    <span class="chip">记录 <b id="hdId">—</b></span>
+    <div class="spacer"></div>
+    <a class="back" href="/">← 返回控制台</a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <span class="badge alarm" id="bdAlarm"><i class="dotled"></i>加速度报警</span>
+    <span class="badge normal" id="bdSaved">已存入数据库</span>
+    <div class="spacer"></div>
+    <button id="btnDl">下载单文件报告</button>
+    <button id="btnJson">导出 JSON</button>
+  </div>
+
+  <div class="card">
+    <div class="grid4">
+      <div class="kv"><div class="k">跌倒报警时间（系统时间）</div><div class="v mono" id="kvTime">—</div></div>
+      <div class="kv"><div class="k">报警窗口概率 / 阈值</div><div class="v" id="kvScore">—</div></div>
+      <div class="kv"><div class="k">数据来源</div><div class="v" id="kvSrc">—</div></div>
+      <div class="kv"><div class="k">报警时刻（数据流内）</div><div class="v" id="kvStream">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>报警时刻前后 3 s 加速度</h2>
+    <canvas id="cv"></canvas>
+    <div class="legend">
+      <span><i style="background:#4aa8ff"></i>ax</span>
+      <span><i style="background:#31d0aa"></i>ay</span>
+      <span><i style="background:#ffa53b"></i>az</span>
+      <span><i style="background:#a78bfa"></i>|a| 模长</span>
+      <span><i style="background:#ff4d5e;height:9px"></i>报警时刻 / 命中窗口区间</span>
+    </div>
+    <div class="mini" style="margin-top:10px">
+      曲线为系统实际使用的信号（60 Hz 重采样 + Butterworth 5 Hz 零相位低通，保重力）。
+      红色虚线 = 报警时刻（最早命中窗口的结束时刻）；红色底纹 = 命中窗口区间。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>记录明细</h2>
+    <table><tbody id="tb"></tbody></table>
+  </div>
+
+  <div class="card">
+    <h2>算法上下文</h2>
+    <table><tbody id="tbAlg"></tbody></table>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="/web/chart.js"></script>
+<script>
+const ID = parseInt(location.pathname.split('/').filter(Boolean).pop(), 10);
+const $ = id => document.getElementById(id);
+const fmt = (v, n = 3) => (v === null || v === undefined) ? '—' : Number(v).toFixed(n);
+
+(async function () {
+  if (!ID || isNaN(ID)) { document.body.innerHTML = '<main><div class="card">非法记录 ID</div></main>'; return; }
+  let ev, meta = null;
+  try {
+    ev = await (await fetch('/api/falls/' + ID)).json();
+  } catch (e) { document.body.insertAdjacentHTML('beforeend', '<div class="toast"><div class="bad">加载失败</div></div>'); return; }
+  try { meta = (await (await fetch('/api/model')).json()).meta; } catch (e) {}
+
+  $('hdId').textContent = '#' + ev.id;
+  $('kvTime').textContent = ev.alarm_time || '—';
+  $('kvScore').innerHTML = `${fmt(ev.score, 3)} <small>/ ${fmt(ev.threshold, 2)}</small>`;
+  $('kvSrc').textContent = ev.source === 'sensor' ? '传感器实时流' : (ev.source === 'sim' ? '模拟数据输入' : ev.source);
+  $('kvStream').innerHTML = `${fmt(ev.stream_alarm, 2)} <small>s</small>`;
+  $('btnDl').onclick = () => window.open('/api/falls/' + ID + '/report.html', '_blank');
+  $('btnJson').onclick = () => window.open('/api/falls/' + ID + '/export.json', '_blank');
+
+  const D = ev.snippet || { t: [], ax: [], ay: [], az: [], mag: [] };
+  const winStart = (ev.t_win_start != null && ev.stream_alarm != null) ? ev.t_win_start - ev.stream_alarm : null;
+  const winEnd = (ev.t_win_end != null && ev.stream_alarm != null) ? ev.t_win_end - ev.stream_alarm : null;
+  drawAccelChart($('cv'), D, { height: 320, winStart, winEnd });
+
+  $('tb').innerHTML = [
+    ['记录 ID', ev.id], ['数据来源', $('kvSrc').textContent],
+    ['来源序列 / 文件', ev.seq || '—'], ['报警时刻（数据流内）', fmt(ev.stream_alarm, 2) + ' s'],
+    ['命中窗口数', ev.n_windows], ['最小编号命中窗概率', fmt(ev.score)],
+    ['命中窗最大概率', fmt(ev.score_max)], ['命中窗平均概率', fmt(ev.score_mean)],
+    ['报警阈值', fmt(ev.threshold, 2)], ['数据总时长', ev.duration_s ? fmt(ev.duration_s, 2) + ' s' : '—'],
+    ['模型版本', ev.model || '—'], ['记录写入时间', ev.created_at],
+  ].map(([k, v]) => `<tr><td style="width:230px;color:var(--dim)">${k}</td><td>${v ?? '—'}</td></tr>`).join('');
+
+  const c = (meta && meta.config) || {};
+  $('tbAlg').innerHTML = [
+    ['识别流', `重采样 ${c.resample_fs | 0} Hz → Butterworth 低通 ${c.butter_cutoff | 0} Hz（零相位、保重力）
+      → ${c.win_s} s / ${c.step_s} s 滑窗 → 39 维统计特征（5 族）→ RF(400)+XGB(400) 概率平均
+      → 事件聚合（间隔 ≤ ${c.merge_gap_win} 窗合并；报警时刻 = 最早命窗结束）`],
+    ['模型', `<code>${(meta && meta.algorithm) || '—'}</code> · seed ${(meta && meta.seed) ?? '—'}
+      · 训练窗数 ${(meta && meta.n_train_windows) ?? '—'} · 训练时间 ${(meta && meta.trained_at) || '—'}`],
+    ['参考性能', `序列级 AUROC ${fmt(meta?.reference_metrics?.auroc_seq_mean, 4)}
+      ± ${fmt(meta?.reference_metrics?.auroc_seq_std, 4)}（3 seed × 分层 5 折 CV）`],
+  ].map(([k, v]) => `<tr><td style="width:230px;color:var(--dim)">${k}</td><td>${v}</td></tr>`).join('');
+
+  window.addEventListener('resize', () => drawAccelChart($('cv'), D, { height: 320, winStart, winEnd }));
+})();
+</script>
+</body>
+</html>

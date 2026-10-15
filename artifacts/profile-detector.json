@@ -1,0 +1,17 @@
+{
+  "timings": {
+    "opencv": {
+      "n": 77,
+      "median_ms": 235.84,
+      "p95_ms": 244.53
+    },
+    "onnxruntime": {
+      "n": 77,
+      "median_ms": 23.55,
+      "p95_ms": 29.33
+    }
+  },
+  "frames": 80,
+  "max_box_error": 2.980232238769531e-07,
+  "max_score_error": 4.76837158203125e-07
+}
